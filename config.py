@@ -22,7 +22,7 @@ def _fetchConfig():
     global algoNames
     global timeSeriesToyDatasetName
 
-    configFilePath = "C:/Users/HP/Desktop/config.json"
+    configFilePath = "C:/workspace_titulacion/config.json"
     with open(configFilePath) as f:
         data = json.load(f)
     # fill variables
