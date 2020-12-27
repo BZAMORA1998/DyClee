@@ -39,10 +39,14 @@ for datIndx in range(len(non_time_series_datasets)):
     k = non_time_series_datasets[datIndx]['k']
     baseFolder = getClusteringResultsPath() + dName + '/'
     # normalize dataset for easier parameter selection
+    #normalizar el conjunto de datos para facilitar la selección de parámetros
     X = StandardScaler().fit_transform(X)
     ac = 0 # processed samples
+           #muestras procesadas
     # iterate over the data points
+    #iterar sobre los puntos de datos
     for dataPoint in X:  # column index
+                         #índice de columna
         ac += 1
         dyclee.trainOnElement(dataPoint)
     currMicroClusters = dyclee.getClusteringResult() # we wanna show the clustering at the end, only once
