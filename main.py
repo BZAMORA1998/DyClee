@@ -16,7 +16,6 @@ def prepareResultFrom(currMicroClusters):
         res.append(row)
     return np.array(res)
 
-
 # GRUPOS DE DATOS QUE NO SON SERIES TEMPORALES
 # PARAMENTROS
 relativeSize=0.06   #TAMAÑO RELATIVO
