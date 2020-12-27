@@ -18,6 +18,7 @@ def _getTimeSeriesToyDatasetName():
 
 def _fetchConfig():
     # we use the global key word to being able to change the values of the variables declared outside the function
+    #usamos la palabra clave global para poder cambiar los valores de las variables declaradas fuera de la función v
     global paths
     global algoNames
     global timeSeriesToyDatasetName
@@ -26,6 +27,7 @@ def _fetchConfig():
     with open(configFilePath) as f:
         data = json.load(f)
     # fill variables
+    #llenar variables
     paths = data.get("paths")
     algoNames = data.get("algoNames")
     timeSeriesToyDatasetName = data.get("timeSeriesToyDatasetName")
@@ -36,6 +38,7 @@ def _fetchElementIfNull(_getter):
     if (element != None):
         return element
     # else
+    #más
     _fetchConfig()
     return _getter()
 

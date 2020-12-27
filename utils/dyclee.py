@@ -10,6 +10,7 @@ import matplotlib.colors as clrs
 from utils.helpers.custom_printing_fxs import printInMagenta
 import matplotlib
 # set matplotlib backend to Qt5Agg to make figure window maximizer work
+##configure el backend de matplotlib en Qt5Agg para hacer que el maximizador de ventana de figura funcione
 matplotlib.use('Qt5Agg')
 
 
@@ -18,6 +19,7 @@ class Dyclee:
                  periodicUpdateAt = float("inf"), timeWindow = 5, findNotDirectlyConnButCloseMicroClusters = True,
                  closenessThreshold = 1.5):
         # hyper parameters
+        #hiperparámetros
         self.relativeSize = relativeSize
         self.uncommonDimensions = uncommonDimensions
         self.processingSpeed = speed
@@ -27,15 +29,16 @@ class Dyclee:
         self.periodicRemovalAt = periodicRemovalAt
         self.findNotDirectlyConnButCloseMicroClusters = findNotDirectlyConnButCloseMicroClusters
         self.closenessThreshold = closenessThreshold
-        self.dataContext = dataContext # must be a bounding box instance
+        self.dataContext = dataContext # must be a bounding box instance  #debe ser una instancia de cuadro delimitador
         # define hyperboxSizePerFeature
+        #definir hyperboxSizePerFeature
         self.hyperboxSizePerFeature = self.getHyperboxSizePerFeature()
-        # internal vis
+        # internal vis //vis interna
         self.aList = []
         self.oList = []
         self.processedElements = 0
         self.timestamp = 0
-        self.currTimestamp = Timestamp() # initialized at 0
+        self.currTimestamp = Timestamp() # initialized at 0  //inicializado en 0
         self.densityMean = 0
         self.densityMedian = 0
 
@@ -74,20 +77,23 @@ class Dyclee:
 
 
     # returns a list of floats given an iterable object
+    #devuelve una lista de flotantes dado un objeto iterable
     def trainOnElement(self, newEl):
         # get an object matching the desired format (to guarantee consistency)
+        #obtener un objeto que coincida con el formato deseado (para garantizar la coherencia)
         point = self.getListOfFloatsFromIterable(newEl)
         self.processedElements += 1
-        # control the stream speed
+        # control the stream speed /controlar la velocidad del flujo
         # TODO: check if the "speed" param is ok ...
         if self.timeToIncTimestamp():
             self.timestamp += 1
             self.currTimestamp.timestamp = self.timestamp
         # now, check what to do with the new point
+        #ahora, compruebe qué hacer con el nuevo punto
         self.processPoint(point)
         if self.timeToCheckMicroClustersTl():
             self.checkMicroClustersTl()
-        # periodic cluster removal
+        # periodic cluster removal //eliminación periódica de racimos
         if self.timeToPerformPeriodicClusterRemoval():
             self.performPeriodicClusterRemoval()
 
@@ -113,19 +119,26 @@ class Dyclee:
 
     def processPoint(self, point):
         # ASSUMPTION: point is a list of floats
+        #SUPUESTO: el punto es una lista de flotantes
         # find reachable u clusters for the new element
+        #encontrar clústeres u accesibles para el nuevo elemento
         reachableMicroClusters = self.findReachableMicroClusters(point)
         if not reachableMicroClusters:
             # empty list -> create u cluster from element
+            #lista vacía -> crear u cluster a partir del elemento
             # the microCluster will have the parametrized relative size, and the Timestamp object to being able to access the
             # current timestamp any atime
+            #el microCluster tendrá el tamaño relativo parametrizado y el objeto Timestamp para poder acceder al
+             # marca de tiempo actual en cualquier momento
             microCluster = MicroCluster(self.hyperboxSizePerFeature, self.currTimestamp, point)
             self.oList.append(microCluster)
         else:
             # find closest reachable u cluster
+            #encontrar el clúster u accesible más cercano
             closestMicroCluster = self.findClosestReachableMicroCluster(point, reachableMicroClusters)
             closestMicroCluster.addElement(point=point, lambd=self.lambd)
         # at this point, self self.aList and self.oList are updated
+        #en este punto, self self.aList y self.oList se actualizan
 
 
     def checkMicroClustersTl(self):
@@ -137,15 +150,19 @@ class Dyclee:
 
     def performPeriodicClusterRemoval(self):
         # if the density of an outlier micro cluster drops below the low density threshold, it is eliminated
+        #si la densidad de un micro cluster atípico cae por debajo del umbral de baja densidad, se elimina
         # we will only keep the micro clusters that fulfil the density requirements
+        #solo mantendremos los micro clústeres que cumplan con los requisitos de densidad
         newOList = []
         for oMicroCluster in self.oList:
             if oMicroCluster.getD() >= self.getDensityThershold():
                 newOList.append(oMicroCluster)
             # do not penalize emerging concepts! A micro cluster must not be 'dense' but, if it is growing, let it grow!
+            ##¡No penalices conceptos emergentes! Un micro racimo no debe ser 'denso' pero, si está creciendo, ¡déjalo crecer!
             elif (self.timestamp - oMicroCluster.CF.tl) < self.timeWindow:
-                newOList.append(oMicroCluster) # we keep the micro cluster!
+                newOList.append(oMicroCluster) # we keep the micro cluster!//Nosotras mantenemos el micro cluster!
         # at this point micro clusters which are below the density requirement were discarded
+        #en este punto, se descartaron los micro racimos que están por debajo del requisito de densidad
         self.oList = newOList
 
 
@@ -155,6 +172,7 @@ class Dyclee:
 
 
    # def calculateMeanAndSD(self, dataset):
+    #def calculateMeanAndSD (self, conjunto de datos):
     #     n = len(dataset)
     #     # sample taken to get the ammount of features
     #     anElement = dataset[0]
@@ -179,22 +197,25 @@ class Dyclee:
     def findReachableMicroClusters(self, point):
         reachableMicroClusters = self.getReachableMicroClustersFrom(self.aList, point)
         if not reachableMicroClusters:
-            # empty list -> check oList
+            # empty list -> check oList //lista vacía -> comprobar oList
             reachableMicroClusters = self.getReachableMicroClustersFrom(self.oList, point)
         return reachableMicroClusters
 
 
     # modifies reareachableMicroClusters iterating over a given list of u clusters
+    #modifica los MicroClusters alcanzables que iteran sobre una lista dada de u clústeres
     def getReachableMicroClustersFrom(self, microClustersList, point):
         res = []
         for microCluster in microClustersList:
             # the microCluster has the parametrized relative size
+            #El microCluster tiene el tamaño relativo parametrizado
             if microCluster.isReachableFrom(point):
                 res.append(microCluster)
         return res
 
 
     # returns the closest microCluster for an element, given a set of reachable microClusters
+    #devuelve el microCluster más cercano para un elemento, dado un conjunto de microClusters alcanzables
     def findClosestReachableMicroCluster(self, point, reachableMicroClusters):
         closestMicroCluster = None
         minDistance = float("inf")
@@ -213,21 +234,29 @@ class Dyclee:
 
     def getClusteringResult(self):
         # update density mean and median values with current ones
+        #actualizar los valores medios y medianos de densidad con los actuales
         self.calculateDensityMeanAndMedian()
         # rearrange lists according to microClusters density, considering density mean and median limits
+        #reorganizar las listas de acuerdo con la densidad de microClusters, considerando los límites de la media y la mediana de la densidad
         self.rearrangeLists()
-        # form final clusters
+        # form final clusters //formar grupos finales
         self.formClusters()
         # concatenate them: get both active and outlier microClusters together
+        #concatenarlos: juntar microclústeres activos y atípicos
         microClusters = self.aList + self.oList
         # extract dense microClusters from active list
+        #extraer microclústeres densos de la lista activa
         # DMC = self.findDenseMicroClusters()
+        #DMC = self.findDenseMicroClusters ()
         DMC = self.aList
         # plot current state and micro cluster evolution
+        #trazar el estado actual y la evolución del micro cluster
         self.plotClusters(microClusters, DMC)
         # update prev state once the evolution was plotted
+        #actualizar el estado anterior una vez que se trazó la evolución
         self.updateMicroClustersPrevCentroid(microClusters, DMC)
         # send updated microClusters lists to s1 (needs to be done at this point to make prev state last; labels will last too)
+        #enviar listas de microClusters actualizadas a s1 (debe hacerse en este punto para que el estado anterior dure; las etiquetas también durarán)
         # TODO: store clustering result -> microClusters
         return microClusters
 
@@ -241,6 +270,7 @@ class Dyclee:
                 newOList.append(microCluster)
             else:
                 # microCluster is dense or semi dense
+                #MicroCluster es denso o semi denso
                 newAList.append(microCluster)
         self.aList = newAList
         self.oList = newOList
@@ -266,24 +296,29 @@ class Dyclee:
 
 
     # returns true if a given u cluster is considered dense
+    #devuelve verdadero si un clúster u dado se considera denso
     def isDense(self, microCluster):
         return (microCluster.getD() >= self.densityMean and microCluster.getD() >= self.densityMedian)
 
 
     # returns true if a given u cluster is considered semi dense
+    #devuelve verdadero si un clúster u dado se considera semi denso
     def isSemiDense(self, microCluster):
         # xor
         return (microCluster.getD() >= self.densityMean) != (microCluster.getD() >= self.densityMedian)
 
 
     # returns true if a given u cluster is considered outlier
+    #devuelve verdadero si un clúster u dado se considera atípico
     def isOutlier(self, microCluster):
         return (microCluster.getD() < self.densityMean and microCluster.getD() < self.densityMedian)
 
 
     # returns only dense u clusters from a set of u clusters
+    #devuelve solo clústeres u densos de un conjunto de clústeres u
     def findDenseMicroClusters(self):
         # it's unnecessary to look for dense microClusters in the oList
+        #No es necesario buscar microclústeres densos en oList
         return [microCluster for microCluster in self.aList if self.isDense(microCluster)]
 
 
@@ -309,16 +344,19 @@ class Dyclee:
     def findCloseMicroClustersFor(self, microCluster, microClusters):
         stddevProportion = self.closenessThreshold
         # for encompassing more micro clusters
+        #para abarcar más micro clústeres
         avgDistToAllMicroClusters, distances = self.getAvgDistToMicroClustersFor(microCluster, microClusters)
         stdev = stddev(distances, avgDistToAllMicroClusters)
         limit = avgDistToAllMicroClusters - (stdev * stddevProportion)
         # the set of close micro clusters which will be used to expand a macro one
+        #el conjunto de microclústeres cercanos que se utilizarán para expandir uno macro
         res = []
         for mc in microClusters:
             mcIsClose = microCluster.distanceTo(mc) < limit
             if not microCluster.isDirectlyConnectedWith(mc, self.uncommonDimensions) and mcIsClose:
                 res.append(mc)
             # TO DEBUG
+            #DEPURAR
             else:
                 print("avg dist", avgDistToAllMicroClusters)
                 print("stdev", stdev)
@@ -337,12 +375,14 @@ class Dyclee:
 
 
     def formClusters(self):
-        # init currentClusterId
+        # init currentClusterId// init ID de clúster actual
         currentClusterId = 0
         # reset microClusters labels as -1
+        ##restablecer las etiquetas de los microclústeres como -1
         self.resetLabelsAsUnclass(self.aList)
         self.resetLabelsAsUnclass(self.oList)
         # start clustering
+        #empezar a agrupar
         alreadySeen = []
         for denseMicroCluster in self.aList:
             if denseMicroCluster not in alreadySeen:
@@ -354,6 +394,7 @@ class Dyclee:
 
 
     # for loop finished -> clusters were formed
+    #para bucle terminado -> se formaron grupos
     def growCluster(self, currentClusterId, alreadySeen, connectedMicroClusters, microClusters):
         i = 0
         while i < len(connectedMicroClusters):
@@ -373,11 +414,13 @@ class Dyclee:
         if not self.plottableMicroClusters(microClusters):
             return
         # let's plot!
+        #vamos a trazar!
         f, (ax1, ax2, ax3) = plt.subplots(1, 3, sharey=True)  # creates a figure with one row and two columns
         self.plotCurrentClustering(ax1, microClusters)
         self.plotMicroClustersEvolution(ax2, DMC)
         self.plotMicroClustersSize(ax3, microClusters)
         # show both subplots
+        #mostrar ambas subtramas
         f.canvas.manager.window.showMaximized()
         plt.show()
 
@@ -387,31 +430,41 @@ class Dyclee:
         for microCluster in microClusters:
             if self.isOutlier(microCluster):
                 # really small size -> comes out almost as a point
+                #tamaño realmente pequeño -> sale casi como un punto
                 res.append(5)
             elif self.isSemiDense(microCluster):
                 # big marker
+                #gran marcador
                 res.append(20)
             elif self.isDense(microCluster):
                 # medium size marker
+                #marcador de tamaño mediano
                 res.append(50)
         return res
 
 
     def plotCurrentClustering(self, ax1, microClusters):
         # first set markers size to represent different densities
+        ##Primero establezca el tamaño de los marcadores para representar diferentes densidades
         s = self.getMarkersSizeList(microClusters)
         # then get a list with u cluster labels
+        #luego obtén una lista con etiquetas de clúster u
         labels = [microCluster.label for microCluster in microClusters]
         # clusters will be a sequence of numbers (cluster number or -1) for each point in the dataset
+        #los grupos serán una secuencia de números (número de grupo o -1) para cada punto del conjunto de datos
         labelsAsNpArray = np.array(labels)
         # get microClusters centroids
+        #obtener centroides de microClusters
         centroids = [microCluster.getCentroid() for microCluster in microClusters]
         x, y = zip(*centroids)
         # show info to user
+        #Mostrar información al usuario
         self.showClusteringInfo(labelsPerUCluster=labels, clusters=labelsAsNpArray, x=x, y=y)
         # scatter'
+        #dispersión'
         ax1.scatter(x, y, c=labelsAsNpArray, cmap="nipy_spectral", marker='s', alpha=0.8, s=s)
         # add general style to subplot n°1
+        #agregar estilo general a la subtrama n ° 1
         self.addStyleToSubplot(ax1,
                                title='CURRENT STATE\nlrg square = dense microcluster \nmed square = semidense microcluster\nsml square = outlier microcluster')
 
@@ -420,47 +473,62 @@ class Dyclee:
         (DMCwPrevState, newDMC) = self.formMicroClustersEvolutionLists(DMC)
         for denseMicroClusterWPrevSt in DMCwPrevState:
             # an arrow will be drawn to represent the evolution in the centroid location for a dense micro cluster
+            # se dibujará una flecha para representar la evolución en la ubicación del centroide para un micro cluster denso
             ax2.annotate("", xy=denseMicroClusterWPrevSt.previousCentroid, xytext=denseMicroClusterWPrevSt.getCentroid(),
                          arrowprops=dict(arrowstyle='<-'))
         # get newDMC centroids
+        #obtener nuevos centroides DMC
         if len(newDMC) is not 0:
             centroids = [microCluster.getCentroid() for microCluster in newDMC]
             x, y = zip(*centroids)
             ax2.plot(x, y, ".", alpha=0.5, )
         # add general style to subplot n°2
+        ## agregar estilo general a la subtrama n ° 2
         self.addStyleToSubplot(ax2, title='DENSE MICRO CLUSTERS EVOLUTION\n"." means no change \n"->" implies evolution')
 
 
     def plotMicroClustersSize(self, ax3, microClusters):
         # choose palette
+        ## elegir paleta
         ns = plt.get_cmap('nipy_spectral')
         # get labels
+        ## obtener etiquetas
         labels = [microCluster.label for microCluster in microClusters]
         # skip repeated leabels
+        # omitir etiquetas repetidas
         s = set(labels)
         # especify normalization to get the correct colors
+        # especificar la normalización para obtener los colores correctos
         norm = clrs.Normalize(vmin=min(s), vmax=max(s))
         # for every micro cluster
+        ## para cada micro cluster
         for microCluster in microClusters:
             # get coordinate x from microCluster centroid
+            ## obtener la coordenada x del centroide del microCluster
             realX = microCluster.getCentroid()[0]
             # get coordinate y from microCluster centroid
+            # obtener la coordenada y del centroide del microCluster
             realY = microCluster.getCentroid()[1]
             # x n y are the bottom left coordinates for the rectangle
+            ##x n y son las coordenadas de la parte inferior izquierda del rectángulo
             # to obtain them we have to substract half the hyperbox size to both coordinates
+            #para obtenerlos tenemos que restar la mitad del tamaño del hipercuadro a ambas coordenadas
             offsetX = microCluster.hyperboxSizePerFeature[0] / 2
             offsetY = microCluster.hyperboxSizePerFeature[1] / 2
             x = realX - offsetX
             y = realY - offsetY
             # the following are represented from the bottom left angle coordinates of the rectangle
+            ## lo siguiente se representa a partir de las coordenadas del ángulo inferior izquierdo del rectángulo
             width = microCluster.hyperboxSizePerFeature[0]
             height = microCluster.hyperboxSizePerFeature[1]
             # get the color
+            ## consigue el color
             c = ns(norm(microCluster.label))
-            # make the rectangle
+            # make the rectangle //# haz el rectángulo
             rect = plt.Rectangle((x, y), width, height, color=c, alpha=0.5)
             ax3.add_patch(rect)
             # plot the rectangle center (microCluster centroid)
+            ## trazar el centro del rectángulo (centroide microCluster)
             ax3.plot(realX, realY, ".", color=c, alpha=0.3)
         self.addStyleToSubplot(ax3, title='MICRO CLUSTERS REAL SIZE')
 
@@ -471,10 +539,13 @@ class Dyclee:
         for denseMicroCluster in DMC:
             if (len(denseMicroCluster.previousCentroid) is 0) or (denseMicroCluster.getCentroid() == denseMicroCluster.previousCentroid):
                 # dense microCluster hasn't previous state --> is a new dense microCluster
+                #microCluster denso no tiene estado anterior -> es un nuevo microCluster denso
                 # dense microCluster prev state and current centroid match --> dense microCluster hasn't changed nor evolutioned; just mark its position
+                #el estado anterior del microCluster denso y el centroide actual coinciden -> el microCluster denso no ha cambiado ni evolucionado; solo marca su posición
                 newDMC.append(denseMicroCluster)
             else:
                 # dense microCluster has previous state --> dense microCluster has evolutioned
+                # microCluster denso tiene estado anterior -> microCluster denso ha evolucionado
                 DMCwPrevState.append(denseMicroCluster)
         return (DMCwPrevState, newDMC)
 
@@ -483,20 +554,23 @@ class Dyclee:
         for microCluster in microClusters:
             if microCluster not in DMC:
                 # microCluster prev state doesn't matter; if a dense microCluster ended up being an outlier, its position is no longer important
+                ## El estado anterior del microCluster no importa; si un microCluster denso terminó siendo un valor atípico, su posición ya no es importante
                 microCluster.previousCentroid = []
             else:
                 # microCluster is dense; current state must be saved for viewing future evolution
+                # microCluster es denso; el estado actual debe guardarse para ver la evolución futura
                 microCluster.previousCentroid = microCluster.getCentroid()
 
 
     def addStyleToSubplot(self, ax, title=''):
-        # set title
+        # set title//establecer título
         ax.set_title(title)
-        # set axes limits
+        # set axes limits//establecer límites de ejes
         minAndMaxDeviations = [-2.5, 2.5]
         ax.set_xlim(minAndMaxDeviations)
         ax.set_ylim(minAndMaxDeviations)
         # set plot general characteristics
+        #establecer las características generales de la parcela
         ax.set_xlabel("Feature 1")
         ax.set_ylabel("Feature 2")
         ax.grid(color='k', linestyle=':', linewidth=1)
@@ -504,6 +578,7 @@ class Dyclee:
 
     def showClusteringInfo(self, labelsPerUCluster, clusters, x, y):
         # show final clustering info
+        ## mostrar información de agrupamiento final
         dic = self.clustersElCounter(labelsPerUCluster)
         dicLength = len(dic)
         if dicLength == 1:
@@ -518,12 +593,14 @@ class Dyclee:
         for key, value in dic.items():
             printInMagenta("- Cluster n°" + key.__repr__() + " -> " + value.__repr__() + " microClusters" + "\n")
         # show detailed info regarding lists of microClusters coordinates and labels
+        ## mostrar información detallada sobre listas de coordenadas y etiquetas de microClusters
         printInMagenta("* microClusters labels: " + '\n' + clusters.__repr__() + '\n')
         printInMagenta("* microClusters 'x' coordinates: " + '\n' + x.__repr__() + '\n')
         printInMagenta("* microClusters 'y' coordinates: " + '\n' + y.__repr__())
 
 
     # returns a dictionary in which every position represents a cluster and every value is the amount of microClusters w that label
+    ## devuelve un diccionario en el que cada posición representa un clúster y cada valor es la cantidad de microClusters con esa etiqueta
     def clustersElCounter(self, labelsPerUCluster):
         dicKeys = set(labelsPerUCluster)
         dic = {key: 0 for key in dicKeys}
@@ -533,14 +610,16 @@ class Dyclee:
 
 
     # returns True if microClusters are plottable (regarding amount of features)
+    ## devuelve True si los microClusters son trazables (con respecto a la cantidad de características)
     def plottableMicroClusters(self, microClusters):
         if len(microClusters) == 0:
             # there are't any u clusters to plot
+            ## no hay clusters de u para trazar
             print("UNABLE TO PLOT CLUSTERS: there are no micro clusters")
             return False
         firstEl = microClusters[0]
         if len(firstEl.CF.LS) != 2:
             print("UNABLE TO PLOT CLUSTERS: it's not a 2D data set")
             return False
-        # microClusters are plottable
+        # microClusters are plottable//# microClusters son trazables
         return True

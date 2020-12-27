@@ -54,13 +54,16 @@ for datIndx in range(len(non_time_series_datasets)):
     folder = baseFolder + getDycleeName() + '/'
     storeNonTimeSeriesResult(res, folder)
     # store algo config
+    # almacenar algo config
     algoConfig = dyclee.getConfig()
     storeAlgoConfig(algoConfig, folder)
 
 
 
 # # TIME SERIES DATA SET CLUSTERING -------------------------------------------------------------------------
+#AGRUPACIÓN DE CONJUNTOS DE DATOS DE SERIE DE TIEMPO
 # # initialization
+#inicialización
 # relativeSize=0.02
 # speed = 50
 # lambd = 0.7 # if it has a value over 0, when a micro cluster is updated, tl will be checked and the diff with current time will matter
@@ -70,6 +73,7 @@ for datIndx in range(len(non_time_series_datasets)):
 # closenessThreshold = 0.8
 #
 # #data context
+##contexto de datos
 # dataContext = [BoundingBox(minimun=-2 , maximun=2),
 #                BoundingBox(minimun=-2 , maximun=2)]
 #

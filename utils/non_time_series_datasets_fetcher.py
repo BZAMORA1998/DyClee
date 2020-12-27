@@ -33,6 +33,7 @@ def getDatasetsFromFolder(resourcesFolder):
         ndarray = np.genfromtxt(filePath, delimiter=",", skip_header=skip_header)
         fileNameWithoutExtension = fileFullName.split(".")[0]
         # append info to datasets
+        #agregar información a conjuntos de datos
         datasets.append({
             'k': int(k),
             'name': fileNameWithoutExtension,

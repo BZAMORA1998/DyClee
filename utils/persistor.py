@@ -15,6 +15,7 @@ def resetStorage():
 
 def createDirectoryIfNotExists(folder):
     # check if resourcesFolder needs to be created
+    ##comprobar si es necesario crear la carpeta de recursos
     if not os.path.exists(folder):
         os.makedirs(folder)
 
