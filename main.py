@@ -17,7 +17,8 @@ def prepareResultFrom(currMicroClusters):
     return np.array(res)
 
 
-# NON TIME SERIES DATA SETS CLUSTERING ---------------------------------------------------------------------
+# NON TIME SERIES DATA SETS CLUSTERING
+# hola---------------------------------------------------------------------
 # params
 relativeSize=0.06
 uncommonDimensions = 0
