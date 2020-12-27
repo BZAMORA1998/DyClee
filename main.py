@@ -17,24 +17,24 @@ def prepareResultFrom(currMicroClusters):
     return np.array(res)
 
 
-# NON TIME SERIES DATA SETS CLUSTERING ---------------------------------------------------------------------
-# params
-relativeSize=0.06
-uncommonDimensions = 0
-closenessThreshold = 1.5
+# GRUPOS DE DATOS QUE NO SON SERIES TEMPORALES
+# PARAMENTROS
+relativeSize=0.06   #TAMAÑO RELATIVO
+uncommonDimensions = 0 #DIMENSIONES POCO COMUNES
+closenessThreshold = 1.5 #UMBRAL DE CERCANIA
 
-# obtain the data sets from the csv files
+# OBTENER LOS CONJUNTOS DE DATOS DEL ARCHIVO CVD
 non_time_series_datasets = getDatasetsFromFolder(getNonTimeSeriesDatasetsPath())
-#data context
+# CONTEXTO DE DATOS
 dataContext = [BoundingBox(minimun=-2 , maximun=2),
                BoundingBox(minimun=-2 , maximun=2)]
 
-# iterate over the data sets
+# ITERAR SOBRE LOS CONJUNTOS DE DATOS
 for datIndx in range(len(non_time_series_datasets)):
-    # new dyclee for each data set
+    # NUEVO DYCLEE PARA CADA CONJUNTO DE DATOS
     dyclee = Dyclee(dataContext=dataContext, relativeSize=relativeSize, uncommonDimensions=uncommonDimensions,
                     closenessThreshold=closenessThreshold)
-    # start
+    # COMIENZA
     X = non_time_series_datasets[datIndx]['dataset']
     dName = non_time_series_datasets[datIndx]['name']
     k = non_time_series_datasets[datIndx]['k']
