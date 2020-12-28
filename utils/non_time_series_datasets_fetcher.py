@@ -3,9 +3,9 @@ import os
 from sys import exit
 import csv
 
-#COGE LOS DATOS DEL ARCHIVO CVD
+#COGE LOS DATOS DEL ARCHIVO CVD OSEA LA INFORMACION QUE SE TIENE ALMACENADA EN LA RUTA DEL ARCHIVO DE EXCEL
 def getDatasetsFromFolder(resourcesFolder):
-    #INTENTE OBTENER UNA LISTA DE TODOS LOS ARCHIVOS DENTRO DE LA CARPETA ESPECIFICADA
+    #INTENTA OBTENER UNA LISTA DE TODOS LOS ARCHIVOS DENTRO DE LA CARPETA ESPECIFICADA
     try:
         files = sorted(
             os.listdir(resourcesFolder))  # DEVUELVE UNA LISTA CLASIFICADA CON TODOS LOS NOMBRES DE ARCHIVOS DENTRO DE LA CARPETA ESPECIFICADA
@@ -15,6 +15,7 @@ def getDatasetsFromFolder(resourcesFolder):
     #PARA GUARDAR JUNTOS TODOS LOS CONJUNTOS DE DATOS BUSCADOS
     datasets = []
     #ITERAR SOBRE LA LISTA DE ARCHIVOS
+    #este codigo es donde se obtiene la ruta de los archivos
     for fileFullName in files:
         filePath = resourcesFolder + fileFullName
         # OBTENER EL PARÁMETRO K DEL ENCABEZADO

@@ -36,27 +36,25 @@ class MicroCluster:
 
 
     
-    # retunrs true if the uc is reachable from a given element
+    # Retunrs verdadero si el uc es alcanzable desde un elemento dado
     def isReachableFrom(self, point):
         myCentroid = self.getCentroid()
         maxDiff = float("-inf")
         featureIndex = 0
-        # for each feature
+        # for each feature #   para cada característica
         for i in range(len(point)):
-            # difference between the element feature and the cluster centroid for that feature
+            # diferencia entre la característica del elemento y el centroide del clúster para esa característica
             diff = abs(point[i] - myCentroid[i])
             if diff > maxDiff:
                 maxDiff = diff
                 featureIndex = i
-        # if for the max diff feature the element doesn't match the cluster, return false
+        # si para la característica de diferencia máxima el elemento no coincide con el clúster, devuelve falso
         if maxDiff >= (self.hyperboxSizePerFeature[i] / 2):
             return False
-        # the element fits the u cluster
+        # el elemento se ajusta al clúster u
         return True
-        
-        
-    
-    # returns the u cluster centroid
+
+    # devuelve el centroide del clúster u
     def getCentroid(self):
         centroid = []
         # for each feature

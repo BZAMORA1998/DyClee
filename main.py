@@ -17,9 +17,10 @@ def prepareResultFrom(currMicroClusters):
     return np.array(res)
 
 # GRUPOS DE DATOS QUE NO SON SERIES TEMPORALES
+
 # PARAMENTROS
-relativeSize=0.06   #TAMAÑO RELATIVO
-uncommonDimensions = 0 #DIMENSIONES POCO COMUNES
+relativeSize=0.06   #TAMAÑO RELATIVO DE DYCLEE
+uncommonDimensions = 0#DIMENSIONES POCO COMUNES
 closenessThreshold = 1.5 #UMBRAL DE CERCANIA
 
 # OBTENER LOS CONJUNTOS DE DATOS DEL ARCHIVO CVD
@@ -49,7 +50,7 @@ for datIndx in range(len(non_time_series_datasets)):
                          #índice de columna
         ac += 1
         dyclee.trainOnElement(dataPoint)
-    currMicroClusters = dyclee.getClusteringResult() # we wanna show the clustering at the end, only once
+    currMicroClusters = dyclee.getClusteringResult() # queremos mostrar el agrupamiento al final, solo una vez
     res = prepareResultFrom(currMicroClusters)
     folder = baseFolder + getDycleeName() + '/'
     storeNonTimeSeriesResult(res, folder)

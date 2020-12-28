@@ -60,10 +60,12 @@ def getTimeSeriesDatasetsPath():
     return _getElementFromDict(key="timeSeriesDatasetsPath", _getter=_getPaths)
 
 
+
+#OBTIENE LOS  DATOS DEL ARCHIVO DE EXCEL
 def getNonTimeSeriesDatasetsPath():
     return _getElementFromDict(key="nonTimeSeriesDatasetsPath", _getter=_getPaths)
 
-
+#OBTIENE LOS  DATOS DEL ARCHIVO DE EXCEL RESUULLTADO
 def getClusteringResultsPath():
     return _getElementFromDict(key="clusteringResultsPath", _getter=_getPaths)
 

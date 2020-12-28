@@ -11,6 +11,7 @@ from utils.helpers.custom_printing_fxs import printInMagenta
 import matplotlib
 # set matplotlib backend to Qt5Agg to make figure window maximizer work
 ##configure el backend de matplotlib en Qt5Agg para hacer que el maximizador de ventana de figura funcione
+##configure el backend de matplotlib en Qt5Agg para hacer que el maximizador de ventana de figura funcione
 matplotlib.use('Qt5Agg')
 
 
@@ -42,7 +43,7 @@ class Dyclee:
         self.densityMean = 0
         self.densityMedian = 0
 
-   
+#RETORNA UN JJASON
     def getConfig(self):
         return {
             "relativeSize": self.relativeSize,
@@ -193,7 +194,7 @@ class Dyclee:
     #         self.SDList.append(featureSD)
 
 
-    # returns a list of reachable u clusters for a given element
+    # devuelve una lista de clústeres u accesibles para un elemento dado
     def findReachableMicroClusters(self, point):
         reachableMicroClusters = self.getReachableMicroClustersFrom(self.aList, point)
         if not reachableMicroClusters:
