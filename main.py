@@ -47,8 +47,8 @@ for datIndx in range(len(non_time_series_datasets)):
            #muestras procesadas
     # iterate over the data points
     #iterar sobre los puntos de datos
-     for dataPoint in X:
-        # column index índice de columna
+    for dataPoint in X:  # column index
+        # índice de columna
         ac += 1
         dyclee.trainOnElement(dataPoint)
     currMicroClusters = dyclee.getClusteringResult()  # queremos mostrar el agrupamiento al final, solo una vez
