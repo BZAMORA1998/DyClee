@@ -36,6 +36,7 @@ for datIndx in range(len(non_time_series_datasets)):
     dyclee = Dyclee(dataContext=dataContext, relativeSize=relativeSize, uncommonDimensions=uncommonDimensions,
                     closenessThreshold=closenessThreshold)
     # COMIENZA
+    #Este metodo se utiliza obvia algunos metodos porque no tiene la marca de tiempo
     X = non_time_series_datasets[datIndx]['dataset']
     dName = non_time_series_datasets[datIndx]['name']
     k = non_time_series_datasets[datIndx]['k']
@@ -50,6 +51,7 @@ for datIndx in range(len(non_time_series_datasets)):
     for dataPoint in X:  # column index
         # índice de columna
         ac += 1
+        #Cada data point va ha enviar al algoritmo de clustering
         dyclee.trainOnElement(dataPoint)
     currMicroClusters = dyclee.getClusteringResult()  # queremos mostrar el agrupamiento al final, solo una vez
     res = prepareResultFrom(currMicroClusters)

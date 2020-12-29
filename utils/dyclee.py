@@ -124,6 +124,8 @@ class Dyclee:
         # find reachable u clusters for the new element
         #encontrar clústeres u accesibles para el nuevo elemento
         reachableMicroClusters = self.findReachableMicroClusters(point)
+
+        #Si no tiene un cluster alcanzable el mismo crea su propio micro clustering
         if not reachableMicroClusters:
             # empty list -> create u cluster from element
             #lista vacía -> crear u cluster a partir del elemento
