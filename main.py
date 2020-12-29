@@ -7,6 +7,7 @@ from config import getClusteringResultsPath, getDycleeName, getTimeSeriesToyData
 import numpy as np
 from utils.bounding_box import BoundingBox
 #librerias internas del proyecto de dyclee para su correcto uso y funcionamiento
+
 def prepareResultFrom(currMicroClusters):
     res = []
     for mc in currMicroClusters:
@@ -46,8 +47,7 @@ for datIndx in range(len(non_time_series_datasets)):
            #muestras procesadas
     # iterate over the data points
     #iterar sobre los puntos de datos
-     for dataPoint in
-        :
+     for dataPoint in X:
         # column index índice de columna
         ac += 1
         dyclee.trainOnElement(dataPoint)
