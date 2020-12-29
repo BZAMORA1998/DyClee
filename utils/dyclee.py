@@ -247,7 +247,7 @@ class Dyclee:
         microClusters = self.aList + self.oList
         # extract dense microClusters from active list
         #extraer microclústeres densos de la lista activa
-        # DMC = self.findDenseMicroClusters()
+        DMC = self.findDenseMicroClusters()
         #DMC = self.findDenseMicroClusters ()
         DMC = self.aList
         # plot current state and micro cluster evolution

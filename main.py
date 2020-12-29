@@ -6,7 +6,7 @@ from utils.persistor import storeAlgoConfig, storeTimeSeriesResult, storeNonTime
 from config import getClusteringResultsPath, getDycleeName, getTimeSeriesToyDatasetName, getNonTimeSeriesDatasetsPath
 import numpy as np
 from utils.bounding_box import BoundingBox
-
+#librerias internas del proyecto de dyclee para su correcto uso y funcionamiento
 def prepareResultFrom(currMicroClusters):
     res = []
     for mc in currMicroClusters:
@@ -19,11 +19,11 @@ def prepareResultFrom(currMicroClusters):
 # GRUPOS DE DATOS QUE NO SON SERIES TEMPORALES
 
 # PARAMENTROS
-relativeSize=0.06   #TAMAÑO RELATIVO DE DYCLEE
+relativeSize=0.06   #TAMAÑO RELATIVO DE loss mmicroclustering del proyecto DYCLEE
 uncommonDimensions = 0#DIMENSIONES POCO COMUNES
 closenessThreshold = 1.5 #UMBRAL DE CERCANIA
-
-# OBTENER LOS CONJUNTOS DE DATOS DEL ARCHIVO CVD
+#dimesion o la distancia maas  cercana al conjunto de informacion
+# OBTENER LOS CONJUNTOS DE DATOS DEL ARCHIVO CVD es aqui donde trae informacion de loss datoss en nontimeseries
 non_time_series_datasets = getDatasetsFromFolder(getNonTimeSeriesDatasetsPath())
 # CONTEXTO DE DATOS
 dataContext = [BoundingBox(minimun=-2 , maximun=2),
@@ -42,15 +42,16 @@ for datIndx in range(len(non_time_series_datasets)):
     # normalize dataset for easier parameter selection
     #normalizar el conjunto de datos para facilitar la selección de parámetros
     X = StandardScaler().fit_transform(X)
-    ac = 0 # processed samples
+    ac = 0  # processed samples
            #muestras procesadas
     # iterate over the data points
     #iterar sobre los puntos de datos
-    for dataPoint in X:  # column index
-                         #índice de columna
+     for dataPoint in
+        :
+        # column index índice de columna
         ac += 1
         dyclee.trainOnElement(dataPoint)
-    currMicroClusters = dyclee.getClusteringResult() # queremos mostrar el agrupamiento al final, solo una vez
+    currMicroClusters = dyclee.getClusteringResult()  # queremos mostrar el agrupamiento al final, solo una vez
     res = prepareResultFrom(currMicroClusters)
     folder = baseFolder + getDycleeName() + '/'
     storeNonTimeSeriesResult(res, folder)
