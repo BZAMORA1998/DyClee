@@ -7,6 +7,7 @@ from config import getClusteringResultsPath, getDycleeName, getTimeSeriesToyData
 import numpy as np
 from utils.bounding_box import BoundingBox
 
+
 def prepareResultFrom(currMicroClusters):
     res = []
     for mc in currMicroClusters:

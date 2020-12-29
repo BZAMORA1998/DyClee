@@ -235,10 +235,11 @@ class Dyclee:
 
     def getClusteringResult(self):
         # update density mean and median values with current ones
-        #actualizar los valores medios y medianos de densidad con los actuales
+        # Actualizar los valores medios y medianos de densidad con los actuales
         self.calculateDensityMeanAndMedian()
         # rearrange lists according to microClusters density, considering density mean and median limits
-        #reorganizar las listas de acuerdo con la densidad de microClusters, considerando los límites de la media y la mediana de la densidad
+        #reorganizar las listas de acuerdo con la densidad de microClusters,
+        # considerando los límites de la media y la mediana de la densidad
         self.rearrangeLists()
         # form final clusters //formar grupos finales
         self.formClusters()
@@ -247,7 +248,7 @@ class Dyclee:
         microClusters = self.aList + self.oList
         # extract dense microClusters from active list
         #extraer microclústeres densos de la lista activa
-        # DMC = self.findDenseMicroClusters()
+        #DMC = self.findDenseMicroClusters()
         #DMC = self.findDenseMicroClusters ()
         DMC = self.aList
         # plot current state and micro cluster evolution
@@ -279,7 +280,11 @@ class Dyclee:
 
     def calculateDensityMeanAndMedian(self):
         concatenatedLists = self.aList + self.oList
+
+        #Calcula la densidad media
         self.densityMean = self.calculateMeanFor(concatenatedLists)
+
+        #Calcula la densidad mediana
         self.densityMedian = self.calculateMedianFor(concatenatedLists)
 
 
@@ -416,7 +421,9 @@ class Dyclee:
             return
         # let's plot!
         #vamos a trazar!
-        f, (ax1, ax2, ax3) = plt.subplots(1, 3, sharey=True)  # creates a figure with one row and two columns
+        # creates a figure with one row and two columns
+        # crea una figura con una fila y dos columnas
+        f, (ax1, ax2, ax3) = plt.subplots(1, 3, sharey=True)
         self.plotCurrentClustering(ax1, microClusters)
         self.plotMicroClustersEvolution(ax2, DMC)
         self.plotMicroClustersSize(ax3, microClusters)
@@ -563,6 +570,7 @@ class Dyclee:
                 microCluster.previousCentroid = microCluster.getCentroid()
 
 
+    # Trabaja con graficos para visualizarlo al usuario
     def addStyleToSubplot(self, ax, title=''):
         # set title//establecer título
         ax.set_title(title)
