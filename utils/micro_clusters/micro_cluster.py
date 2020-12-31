@@ -68,9 +68,10 @@ class MicroCluster:
     # updates CF vector
     def addElement(self, point, lambd):
         decayComponent = self.decayComponent(lambd)
-        self.updateN(decayComponent, point)
-        self.updateLS(decayComponent, point)
-        self.updateSS(decayComponent, point)
+        #Concatena los nuevos numeros de registro con lo que ya tenia
+        self.updateN(decayComponent, point)#Actualiza el numero de elementos
+        self.updateLS(decayComponent, point)#Actualiza la suma lineal
+        self.updateSS(decayComponent, point)#Actualiza la suma cuadratica
         self.updateTl()
 
 

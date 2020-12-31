@@ -86,15 +86,21 @@ class Dyclee:
         self.processedElements += 1
         # control the stream speed /controlar la velocidad del flujo
         # TODO: check if the "speed" param is ok ...
+
+        #No aplica xq no se va a trabajar con marca de tiempo
         if self.timeToIncTimestamp():
             self.timestamp += 1
             self.currTimestamp.timestamp = self.timestamp
         # now, check what to do with the new point
         #ahora, compruebe qué hacer con el nuevo punto
         self.processPoint(point)
+
+        # No aplica xq no se va a trabajar con marca de tiempo
         if self.timeToCheckMicroClustersTl():
             self.checkMicroClustersTl()
         # periodic cluster removal //eliminación periódica de racimos
+
+        # No aplica xq no se va a trabajar con marca de tiempo
         if self.timeToPerformPeriodicClusterRemoval():
             self.performPeriodicClusterRemoval()
 
@@ -126,6 +132,8 @@ class Dyclee:
         reachableMicroClusters = self.findReachableMicroClusters(point)
 
         #Si no tiene un cluster alcanzable el mismo crea su propio micro clustering
+
+        #Solo entraria si llega el primer registro de la base de datos
         if not reachableMicroClusters:
             # empty list -> create u cluster from element
             #lista vacía -> crear u cluster a partir del elemento
