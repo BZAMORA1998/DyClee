@@ -486,7 +486,7 @@ class Dyclee:
         # add general style to subplot n°1
         #agregar estilo general a la subtrama n ° 1
         self.addStyleToSubplot(ax1,
-                               title='ESTADOS ACTUALES\nlrg square = dense microcluster \nmed square = semidense microcluster\nsml square = outlier microcluster')
+                               title='ESTADOS ACTUALES\nCuadrado lrg = microcluster denso \ncuadrado medio = microcluster semidenso\nSml cuadrado = microcluster atípico')
 
 
     def plotMicroClustersEvolution(self, ax2, DMC):
@@ -504,7 +504,7 @@ class Dyclee:
             ax2.plot(x, y, ".", alpha=0.5, )
         # add general style to subplot n°2
         ## agregar estilo general a la subtrama n ° 2
-        self.addStyleToSubplot(ax2, title='DENSE MICRO CLUSTERS EVOLUTION\n"." means no change \n"->" implies evolution')
+        self.addStyleToSubplot(ax2, title='EVOLUCIÓN DENSA DE MICRO CLÚSTERS\n"." significa que no hay cambio \n"->" implica evolución')
 
 
     def plotMicroClustersSize(self, ax3, microClusters):
@@ -550,7 +550,7 @@ class Dyclee:
             # plot the rectangle center (microCluster centroid)
             ## trazar el centro del rectángulo (centroide microCluster)
             ax3.plot(realX, realY, ".", color=c, alpha=0.3)
-        self.addStyleToSubplot(ax3, title='MICRO CLUSTERS REAL SIZE')
+        self.addStyleToSubplot(ax3, title='MICRO CLUSTERS TAMAÑO REAL')
 
 
     def formMicroClustersEvolutionLists(self, DMC):
@@ -592,8 +592,8 @@ class Dyclee:
         ax.set_ylim(minAndMaxDeviations)
         # set plot general characteristics
         #establecer las características generales de la parcela
-        ax.set_xlabel("Feature 1")
-        ax.set_ylabel("Feature 2")
+        ax.set_xlabel("Característica 1")
+        ax.set_ylabel("Característica 2")
         ax.grid(color='k', linestyle=':', linewidth=1)
 
 
