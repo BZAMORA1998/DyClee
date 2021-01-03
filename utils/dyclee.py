@@ -486,7 +486,7 @@ class Dyclee:
         # add general style to subplot n°1
         #agregar estilo general a la subtrama n ° 1
         self.addStyleToSubplot(ax1,
-                               title='CURRENT STATE\nlrg square = dense microcluster \nmed square = semidense microcluster\nsml square = outlier microcluster')
+                               title='ESTADOS ACTUALES\nlrg square = dense microcluster \nmed square = semidense microcluster\nsml square = outlier microcluster')
 
 
     def plotMicroClustersEvolution(self, ax2, DMC):
