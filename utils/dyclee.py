@@ -376,9 +376,9 @@ class Dyclee:
             # TO DEBUG
             #DEPURAR
             else:
-                print("avg dist", avgDistToAllMicroClusters)
+                print("dist promedio", avgDistToAllMicroClusters)
                 print("stdev", stdev)
-                print("limit", limit)
+                print("límite", limit)
                 print("yo", microCluster.getCentroid(), "el", mc.getCentroid())
                 print("\n")
         return res
@@ -603,21 +603,21 @@ class Dyclee:
         dic = self.clustersElCounter(labelsPerUCluster)
         dicLength = len(dic)
         if dicLength == 1:
-            msg = "There is only 1 final cluster and "
+            msg = "Solo hay 1 grupo final y"
         else:
-            msg = "There are " + len(dic).__repr__() + " final clusters and "
+            msg = "Hay " + len(dic).__repr__() + " grupos finales y "
         if -1 in labelsPerUCluster:
-            msg += "one of them represents outliers (the black one)."
+            msg += "uno de ellos representa valores atípicos (el negro)."
         else:
-            msg += "no outliers."
+            msg += "sin valores atípicos."
         printInMagenta(msg + "\n")
         for key, value in dic.items():
             printInMagenta("- Cluster n°" + key.__repr__() + " -> " + value.__repr__() + " microClusters" + "\n")
         # show detailed info regarding lists of microClusters coordinates and labels
         ## mostrar información detallada sobre listas de coordenadas y etiquetas de microClusters
-        printInMagenta("* microClusters labels: " + '\n' + clusters.__repr__() + '\n')
-        printInMagenta("* microClusters 'x' coordinates: " + '\n' + x.__repr__() + '\n')
-        printInMagenta("* microClusters 'y' coordinates: " + '\n' + y.__repr__())
+        printInMagenta("* microClusters etiquetas: " + '\n' + clusters.__repr__() + '\n')
+        printInMagenta("* microClusters 'x' coordenadas: " + '\n' + x.__repr__() + '\n')
+        printInMagenta("* microClusters 'y' coordenadas: " + '\n' + y.__repr__())
 
 
     # returns a dictionary in which every position represents a cluster and every value is the amount of microClusters w that label
