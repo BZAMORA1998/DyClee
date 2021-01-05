@@ -465,7 +465,7 @@ class Dyclee:
 
     def plotCurrentClustering(self, ax1, microClusters):
         # first set markers size to represent different densities
-        ##Primero establezca el tamaño de los marcadores para representar diferentes densidades
+        # Primero establezca el tamaño de los marcadores para representar diferentes densidades
         s = self.getMarkersSizeList(microClusters)
         # then get a list with u cluster labels
         #luego obtén una lista con etiquetas de clúster u

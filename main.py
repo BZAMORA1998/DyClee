@@ -20,23 +20,28 @@ def prepareResultFrom(currMicroClusters):
 # GRUPOS DE DATOS QUE NO SON SERIES TEMPORALES
 
 # PARAMENTROS
-relativeSize=0.06   #TAMAÑO RELATIVO DE loss mmicroclustering del proyecto DYCLEE
-uncommonDimensions = 0#DIMENSIONES POCO COMUNES
-closenessThreshold = 1.5 #UMBRAL DE CERCANIA
+relativeSize=0.06           #TAMAÑO RELATIVO DE loss mmicroclustering del proyecto DYCLEE
+uncommonDimensions = 0      #DIMENSIONES POCO COMUNES
+closenessThreshold = 1.5    #UMBRAL DE CERCANIA
+
 #dimesion o la distancia maas  cercana al conjunto de informacion
 # OBTENER LOS CONJUNTOS DE DATOS DEL ARCHIVO CVD es aqui donde trae informacion de loss datoss en nontimeseries
 non_time_series_datasets = getDatasetsFromFolder(getNonTimeSeriesDatasetsPath())
+
 # CONTEXTO DE DATOS
 dataContext = [BoundingBox(minimun=-2 , maximun=2),
                BoundingBox(minimun=-2 , maximun=2)]
 
 # ITERAR SOBRE LOS CONJUNTOS DE DATOS
+# len : sirve para saber cuantos item hay en non_time_series_datasets.
+# range: crea la secuencia.
+
 for datIndx in range(len(non_time_series_datasets)):
     # NUEVO DYCLEE PARA CADA CONJUNTO DE DATOS
     dyclee = Dyclee(dataContext=dataContext, relativeSize=relativeSize, uncommonDimensions=uncommonDimensions,
                     closenessThreshold=closenessThreshold)
-    # COMIENZA
-    #Este metodo se utiliza obvia algunos metodos porque no tiene la marca de tiempo
+    # Comienza
+    # Este metodo se utiliza obvia algunos metodos porque no tiene la marca de tiempo
     X = non_time_series_datasets[datIndx]['dataset']
     dName = non_time_series_datasets[datIndx]['name']
     k = non_time_series_datasets[datIndx]['k']
