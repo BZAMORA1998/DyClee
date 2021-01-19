@@ -629,6 +629,7 @@ class Dyclee:
             dic[c] += 1
         return dic
 
+chupalo zamora
 
     # returns True if microClusters are plottable (regarding amount of features)
     ## devuelve True si los microClusters son trazables (con respecto a la cantidad de características)
