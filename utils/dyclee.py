@@ -15,6 +15,14 @@ import matplotlib
 matplotlib.use('Qt5Agg')
 
 
+class valorCluster:
+    x = 0.0
+    y = 0.0
+    color = ""
+
+class color:
+    color=""
+
 class Dyclee:
     def __init__(self, dataContext, relativeSize = 0.6, speed = float("inf"), uncommonDimensions = 0, lambd = 0, periodicRemovalAt = float("inf"),
                  periodicUpdateAt = float("inf"), timeWindow = 5, findNotDirectlyConnButCloseMicroClusters = True,
@@ -439,6 +447,14 @@ class Dyclee:
         self.plotCurrentClustering(ax1, microClusters)
         self.plotMicroClustersEvolution(ax2, DMC)
         self.plotMicroClustersSize(ax3, microClusters)
+
+        cont=0
+        for col in listColor:
+            cont=cont+1
+            for li in lista:
+                if col.color == li.color:
+                    printInMagenta("Cluster "+str(cont)+" : X:"+str(li.x)+" || Y "+str(li.y))
+
         # show both subplots
         #mostrar ambas subtramas
         f.canvas.manager.window.showMaximized()
@@ -476,6 +492,7 @@ class Dyclee:
         # get microClusters centroids
         #obtener centroides de microClusters
         centroids = [microCluster.getCentroid() for microCluster in microClusters]
+
         x, y = zip(*centroids)
         # show info to user
         #Mostrar información al usuario
@@ -506,6 +523,10 @@ class Dyclee:
         ## agregar estilo general a la subtrama n ° 2
         self.addStyleToSubplot(ax2, title='EVOLUCIÓN DENSA DE MICRO CLÚSTERS\n"." significa que no hay cambio \n"->" implica evolución')
 
+    global lista
+    global listColor
+    lista=list()
+    listColor=list()
 
     def plotMicroClustersSize(self, ax3, microClusters):
         # choose palette
@@ -523,6 +544,7 @@ class Dyclee:
         # for every micro cluster
         ## para cada micro cluster
         for microCluster in microClusters:
+
             # get coordinate x from microCluster centroid
             ## obtener la coordenada x del centroide del microCluster
             realX = microCluster.getCentroid()[0]
@@ -537,6 +559,7 @@ class Dyclee:
             offsetY = microCluster.hyperboxSizePerFeature[1] / 2
             x = realX - offsetX
             y = realY - offsetY
+
             # the following are represented from the bottom left angle coordinates of the rectangle
             ## lo siguiente se representa a partir de las coordenadas del ángulo inferior izquierdo del rectángulo
             width = microCluster.hyperboxSizePerFeature[0]
@@ -547,6 +570,34 @@ class Dyclee:
             # make the rectangle //# haz el rectángulo
             rect = plt.Rectangle((x, y), width, height, color=c, alpha=0.5)
             ax3.add_patch(rect)
+
+
+
+            # printInMagenta("Valor X: " + x.__repr__() + " Color: "+c.__repr__())
+            # printInMagenta("Valor Y: " + y.__repr__()+ " Color: "+c.__repr__())
+            a=valorCluster();
+            a.x=float(x.__repr__())
+            a.y=float(y.__repr__())
+            a.color=c.__repr__()
+            lista.append(a)
+
+            if len(listColor)==0:
+                b=color()
+                b.color=c.__repr__()
+                listColor.append(b)
+            else :
+                cont=0
+                for col in listColor:
+                    if col.color == c.__repr__():
+                        cont=cont+1;
+
+                if cont==0 :
+                    b = color()
+                    b.color = c.__repr__()
+                    listColor.append(b)
+
+            printInMagenta("Valor X: "+str(a.x)+" || Valor Y:"+str(a.y) +" || Color: "+a.color)
+
             # plot the rectangle center (microCluster centroid)
             ## trazar el centro del rectángulo (centroide microCluster)
             ax3.plot(realX, realY, ".", color=c, alpha=0.3)
@@ -615,6 +666,7 @@ class Dyclee:
             printInMagenta("- Cluster n°" + key.__repr__() + " -> " + value.__repr__() + " microClusters" + "\n")
         # show detailed info regarding lists of microClusters coordinates and labels
         ## mostrar información detallada sobre listas de coordenadas y etiquetas de microClusters
+
         printInMagenta("* microClusters etiquetas: " + '\n' + clusters.__repr__() + '\n')
         printInMagenta("* microClusters 'x' coordenadas: " + '\n' + x.__repr__() + '\n')
         printInMagenta("* microClusters 'y' coordenadas: " + '\n' + y.__repr__())
