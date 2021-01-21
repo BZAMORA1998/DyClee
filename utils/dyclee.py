@@ -449,11 +449,13 @@ class Dyclee:
         self.plotMicroClustersSize(ax3, microClusters)
 
         cont=0
+        cont1=0
         for col in listColor:
             cont=cont+1
             for li in lista:
                 if col.color == li.color:
-                    printInMagenta("Cluster "+str(cont)+" : X:"+str(li.x)+" || Y: "+str(li.y))
+                    cont1 =cont1+1
+                    printInMagenta(str(cont1)+". Cluster "+str(cont)+" : X:"+str(li.x)+" || Y: "+str(li.y))
 
         # show both subplots
         #mostrar ambas subtramas
@@ -535,6 +537,7 @@ class Dyclee:
         # get labels
         ## obtener etiquetas
         labels = [microCluster.label for microCluster in microClusters]
+
         # skip repeated leabels
         # omitir etiquetas repetidas
         s = set(labels)
@@ -666,6 +669,8 @@ class Dyclee:
             printInMagenta("- Cluster n°" + key.__repr__() + " -> " + value.__repr__() + " microClusters" + "\n")
         # show detailed info regarding lists of microClusters coordinates and labels
         ## mostrar información detallada sobre listas de coordenadas y etiquetas de microClusters
+
+        printInMagenta("* microClusters etiquetas: " + '\n' + clusters.__repr__() + '\n')
 
         printInMagenta("* microClusters etiquetas: " + '\n' + clusters.__repr__() + '\n')
         printInMagenta("* microClusters 'x' coordenadas: " + '\n' + x.__repr__() + '\n')
