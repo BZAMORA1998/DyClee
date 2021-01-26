@@ -23,6 +23,12 @@ class valorCluster:
 class color:
     color=""
 
+class microcluster:
+    x = 0.0
+    y = 0.0
+    xcluster = 0.0
+    ycluster = 0.0
+
 class Dyclee:
     def __init__(self, dataContext, relativeSize = 0.6, speed = float("inf"), uncommonDimensions = 0, lambd = 0, periodicRemovalAt = float("inf"),
                  periodicUpdateAt = float("inf"), timeWindow = 5, findNotDirectlyConnButCloseMicroClusters = True,
@@ -131,7 +137,9 @@ class Dyclee:
     def timeToCheckMicroClustersTl(self):
         return self.processedElements % (self.periodicUpdateAt * self.processingSpeed) == 0
 
-
+    global listaMicrocluster
+    listaMicrocluster = list()
+    con = 0
     def processPoint(self, point):
         # ASSUMPTION: point is a list of floats
         #SUPUESTO: el punto es una lista de flotantes
@@ -151,11 +159,24 @@ class Dyclee:
              # marca de tiempo actual en cualquier momento
             microCluster = MicroCluster(self.hyperboxSizePerFeature, self.currTimestamp, point)
             self.oList.append(microCluster)
+            self.con=self.con+1;
+            print(self.con,". Microcluster: ", microCluster.CF.LS , "valor: ",point)
+
+            # a=microcluster()
+            # a.x(point[0])
+            # a.x(point[1])
+            # a.xcluster(microCluster.CF.LS[0])
+            # a.ycluster(microCluster.CF.LS[1])
+            # listaMicrocluster.append(a)
+
         else:
             # find closest reachable u cluster
             #encontrar el clúster u accesible más cercano
             closestMicroCluster = self.findClosestReachableMicroCluster(point, reachableMicroClusters)
             closestMicroCluster.addElement(point=point, lambd=self.lambd)
+            self.con = self.con + 1;
+            print(self.con, ". Microcluster: ", closestMicroCluster.CF.LS, "valor: ", point)
+
         # at this point, self self.aList and self.oList are updated
         #en este punto, self self.aList y self.oList se actualizan
 
