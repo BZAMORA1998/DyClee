@@ -23,7 +23,7 @@ class valorCluster:
 class color:
     color=""
 
-class microcluster:
+class cluster:
     x = 0.0
     y = 0.0
     xcluster = 0.0
@@ -162,12 +162,12 @@ class Dyclee:
             self.con=self.con+1;
             print(self.con,". Microcluster: ", microCluster.CF.LS , "valor: ",point)
 
-            # a=microcluster()
-            # a.x(point[0])
-            # a.x(point[1])
-            # a.xcluster(microCluster.CF.LS[0])
-            # a.ycluster(microCluster.CF.LS[1])
-            # listaMicrocluster.append(a)
+            a=cluster()
+            a.x(point[0])
+            a.x(point[1])
+            a.xcluster(microCluster.CF.LS[0])
+            a.ycluster(microCluster.CF.LS[1])
+            listaMicrocluster.append(a)
 
         else:
             # find closest reachable u cluster
