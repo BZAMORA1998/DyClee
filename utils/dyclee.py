@@ -23,6 +23,12 @@ class valorCluster:
 class color:
     color=""
 
+class cluster:
+    x = 0.0
+    y = 0.0
+    xcluster = 0.0
+    ycluster = 0.0
+
 class Dyclee:
     def __init__(self, dataContext, relativeSize = 0.6, speed = float("inf"), uncommonDimensions = 0, lambd = 0, periodicRemovalAt = float("inf"),
                  periodicUpdateAt = float("inf"), timeWindow = 5, findNotDirectlyConnButCloseMicroClusters = True,
@@ -131,7 +137,9 @@ class Dyclee:
     def timeToCheckMicroClustersTl(self):
         return self.processedElements % (self.periodicUpdateAt * self.processingSpeed) == 0
 
-
+    global listaMicrocluster
+    listaMicrocluster = list()
+    con = 0
     def processPoint(self, point):
         # ASSUMPTION: point is a list of floats
         #SUPUESTO: el punto es una lista de flotantes
@@ -151,11 +159,24 @@ class Dyclee:
              # marca de tiempo actual en cualquier momento
             microCluster = MicroCluster(self.hyperboxSizePerFeature, self.currTimestamp, point)
             self.oList.append(microCluster)
+            self.con=self.con+1;
+            print(self.con,". Microcluster: ", microCluster.CF.LS , "valor: ",point)
+
+           # a=cluster()
+            #a.x(point[0])
+            #a.x(point[1])
+            #a.xcluster(microCluster.CF.LS[0])
+            #a.ycluster(microCluster.CF.LS[1])
+            #listaMicrocluster.append(a)
+
         else:
             # find closest reachable u cluster
             #encontrar el clúster u accesible más cercano
             closestMicroCluster = self.findClosestReachableMicroCluster(point, reachableMicroClusters)
             closestMicroCluster.addElement(point=point, lambd=self.lambd)
+            self.con = self.con + 1;
+            print(self.con, ". Microcluster: ", closestMicroCluster.CF.LS, "valor: ", point)
+
         # at this point, self self.aList and self.oList are updated
         #en este punto, self self.aList y self.oList se actualizan
 
@@ -449,11 +470,13 @@ class Dyclee:
         self.plotMicroClustersSize(ax3, microClusters)
 
         cont=0
+        cont1=0
         for col in listColor:
             cont=cont+1
             for li in lista:
                 if col.color == li.color:
-                    printInMagenta("Cluster "+str(cont)+" : X:"+str(li.x)+" || Y: "+str(li.y))
+                    cont1 =cont1+1
+                    printInMagenta(str(cont1)+". Cluster "+str(cont)+" : X:"+str(li.x)+" || Y: "+str(li.y))
 
         # show both subplots
         #mostrar ambas subtramas
@@ -540,6 +563,7 @@ class Dyclee:
         # get labels
         ## obtener etiquetas
         labels = [microCluster.label for microCluster in microClusters]
+
         # skip repeated leabels
         # omitir etiquetas repetidas
         s = set(labels)
@@ -671,6 +695,8 @@ class Dyclee:
             printInMagenta("- Cluster n°" + key.__repr__() + " -> " + value.__repr__() + " microClusters" + "\n")
         # show detailed info regarding lists of microClusters coordinates and labels
         ## mostrar información detallada sobre listas de coordenadas y etiquetas de microClusters
+
+        printInMagenta("* microClusters etiquetas: " + '\n' + clusters.__repr__() + '\n')
 
         printInMagenta("* microClusters etiquetas: " + '\n' + clusters.__repr__() + '\n')
         printInMagenta("* microClusters 'x' coordenadas: " + '\n' + x.__repr__() + '\n')
