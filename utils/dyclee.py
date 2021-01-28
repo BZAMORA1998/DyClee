@@ -519,6 +519,11 @@ class Dyclee:
             centroids = [microCluster.getCentroid() for microCluster in newDMC]
             x, y = zip(*centroids)
             ax2.plot(x, y, ".", alpha=0.5, )
+
+            cont1=0
+            for x1 in x:
+                printInMagenta("Densa Microcluster: Valor Y: " + x1.__repr__()+ " Valor: "+y[cont1].__repr__())
+                cont1=cont1+1
         # add general style to subplot n°2
         ## agregar estilo general a la subtrama n ° 2
         self.addStyleToSubplot(ax2, title='EVOLUCIÓN DENSA DE MICRO CLÚSTERS\n"." significa que no hay cambio \n"->" implica evolución')
