@@ -52,7 +52,7 @@ for datIndx in range(len(non_time_series_datasets)):
         # índice de columna
         ac += 1
         #Cada data point va ha enviar al algoritmo de clustering
-        dyclee.trainOnElement(dataPoint)
+        dyclee.trainOnElement(dataPoint,ac)
     currMicroClusters = dyclee.getClusteringResult()  # queremos mostrar el agrupamiento al final, solo una vez
     res = prepareResultFrom(currMicroClusters)
     folder = baseFolder + getDycleeName() + '/'

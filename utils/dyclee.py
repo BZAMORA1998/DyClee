@@ -93,7 +93,7 @@ class Dyclee:
 
     # returns a list of floats given an iterable object
     #devuelve una lista de flotantes dado un objeto iterable
-    def trainOnElement(self, newEl):
+    def trainOnElement(self, newEl,ac):
         # get an object matching the desired format (to guarantee consistency)
         #obtener un objeto que coincida con el formato deseado (para garantizar la coherencia)
         point = self.getListOfFloatsFromIterable(newEl)
@@ -107,7 +107,7 @@ class Dyclee:
             self.currTimestamp.timestamp = self.timestamp
         # now, check what to do with the new point
         #ahora, compruebe qué hacer con el nuevo punto
-        self.processPoint(point)
+        self.processPoint(point,ac)
 
         # No aplica xq no se va a trabajar con marca de tiempo
         if self.timeToCheckMicroClustersTl():
@@ -140,7 +140,7 @@ class Dyclee:
     global listaMicrocluster
     listaMicrocluster = list()
     con = 0
-    def processPoint(self, point):
+    def processPoint(self, point,ac):
         # ASSUMPTION: point is a list of floats
         #SUPUESTO: el punto es una lista de flotantes
         # find reachable u clusters for the new element
@@ -160,7 +160,7 @@ class Dyclee:
             microCluster = MicroCluster(self.hyperboxSizePerFeature, self.currTimestamp, point)
             self.oList.append(microCluster)
             self.con=self.con+1;
-            print(self.con,". Microcluster: ", microCluster.CF.LS , "valor: ",point)
+            print(self.con,". Microcluster: ",microCluster.getCentroid(), "valor: ",microCluster.CF.LS)
 
            # a=cluster()
             #a.x(point[0])
@@ -175,7 +175,7 @@ class Dyclee:
             closestMicroCluster = self.findClosestReachableMicroCluster(point, reachableMicroClusters)
             closestMicroCluster.addElement(point=point, lambd=self.lambd)
             self.con = self.con + 1;
-            print(self.con, ". Microcluster: ", closestMicroCluster.CF.LS, "valor: ", point)
+            print(self.con, ". Microcluster: ", closestMicroCluster.getCentroid(), "valor: ", point)
 
         # at this point, self self.aList and self.oList are updated
         #en este punto, self self.aList y self.oList se actualizan

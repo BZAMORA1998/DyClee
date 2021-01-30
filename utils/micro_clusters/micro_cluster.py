@@ -129,6 +129,7 @@ class MicroCluster:
 
     
     # retunrs true if the microCluster is directly connected to another microCluster
+    #devuelve verdadero si el microCluster está conectado  directamente a otro microCluster
     def isDirectlyConnectedWith(self, microCluster, uncommonDimensions):
       featuresCount = len(self.CF.LS)
       currentUncommonDimensions = 0
@@ -137,8 +138,10 @@ class MicroCluster:
       # for each feature
       for i in range(featuresCount):
           # difference between the u cluster centroids for that feature
+          #diferencia entre los centroides del clúster u para esa característica
           aux = abs(myCentroid[i] - microClusterCentroid[i])
           # if for a given feature the element doesn't match the cluster, return false
+          #si para una característica determinada el elemento no coincide con el clúster, devuelve falso
           if aux >= self.hyperboxSizePerFeature[i]:
               currentUncommonDimensions += 1
       return currentUncommonDimensions <= uncommonDimensions
