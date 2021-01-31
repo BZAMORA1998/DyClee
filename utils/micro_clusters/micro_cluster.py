@@ -102,7 +102,7 @@ class MicroCluster:
         # add element
         if point is not None:
             for i in range(len(point)):
-                self.CF.LS[i] = self.CF.LS[i] + point[i]
+                self.CF.LS[i] = self.CF.LS[i] + point[i] ##############
             
             
     
