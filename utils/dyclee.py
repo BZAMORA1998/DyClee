@@ -160,8 +160,8 @@ class Dyclee:
             microCluster = MicroCluster(self.hyperboxSizePerFeature, self.currTimestamp, point)
             self.oList.append(microCluster)
             self.con=self.con+1;
-            print(self.con,". Microcluster: ",microCluster.getCentroid(), "valor: ",microCluster.CF.LS)
-
+            print(self.con, ". Microcluster: ", microCluster.CF.__dict__)
+           # print(self.con,". Microcluster: ",microCluster.getCentroid(), "valor: ",microCluster.CF.LS)
            # a=cluster()
             #a.x(point[0])
             #a.x(point[1])
@@ -175,7 +175,7 @@ class Dyclee:
             closestMicroCluster = self.findClosestReachableMicroCluster(point, reachableMicroClusters)
             closestMicroCluster.addElement(point=point, lambd=self.lambd)
             self.con = self.con + 1;
-            print(self.con, ". Microcluster: ", closestMicroCluster.getCentroid(), "valor: ", point)
+            print(self.con, ". Microcluster: ", closestMicroCluster.CF.__dict__, "valor: ", point)
 
         # at this point, self self.aList and self.oList are updated
         #en este punto, self self.aList y self.oList se actualizan

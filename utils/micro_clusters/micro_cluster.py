@@ -15,7 +15,7 @@ class MicroCluster:
         self.CF = self.initializeCF(point)
         self.label = -1 #"unclass"
         self.previousCentroid = []
-    
+
 
 
     def __repr__(self):
@@ -23,8 +23,8 @@ class MicroCluster:
 
 
 
-    # initializes CF  
-    def initializeCF(self, point):  
+    # initializes CF
+    def initializeCF(self, point):
        # we assume point is a list of features
        LS = point
        # this vector will only have point elements squared
@@ -91,8 +91,8 @@ class MicroCluster:
         N = self.CF.n * decayComponent
         if point is not None:
             N += 1
+            self.CF.data.append(point)
         self.CF.n = N
-
         
     
     def updateLS(self, decayComponent, point=None):

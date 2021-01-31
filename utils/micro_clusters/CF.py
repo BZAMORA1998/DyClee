@@ -14,6 +14,8 @@ class CF:
         # time when the μ cluster was created
         self.ts = ts
 
+        self.data=[]
+
 
     def __repr__(self):
         return 'CF'
