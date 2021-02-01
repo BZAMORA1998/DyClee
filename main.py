@@ -44,19 +44,24 @@ for datIndx in range(len(non_time_series_datasets)):
     # normalize dataset for easier parameter selection
     #normalizar el conjunto de datos para facilitar la selección de parámetros
     X = StandardScaler().fit_transform(X)
-    ac = 0  # processed samples
-           #muestras procesadas
+    ac = 0   #muestras procesadas
     # iterate over the data points
     #iterar sobre los puntos de datos
+    #print(X)
     for dataPoint in X:  # column index
         # índice de columna
         ac += 1
+        #print(dataPoint)
+       # print(ac,X)
         #Cada data point va ha enviar al algoritmo de clustering
         dyclee.trainOnElement(dataPoint,ac)
     currMicroClusters = dyclee.getClusteringResult()  # queremos mostrar el agrupamiento al final, solo una vez
     res = prepareResultFrom(currMicroClusters)
+    #print(res)
     folder = baseFolder + getDycleeName() + '/'
+    #print(folder)
     storeNonTimeSeriesResult(res, folder)
+    #print(storeNonTimeSeriesResult())
     # store algo config
     # almacenar algo config
     algoConfig = dyclee.getConfig()

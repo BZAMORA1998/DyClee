@@ -71,7 +71,7 @@ class Dyclee:
             "dataContext": self.dataContextAsStr(),
         }
 
-
+#INVOCA LAS FUNCIONES Y LAS COMPARA Y TAMBIEN CREA EL CONTADOR DATACONTEXT Y MULTIPLICA EL RELATIVESIZE =0.06 CON EL AUXILIR QUE EL VALOR ES 4 Y EL VALOR QUE ARROJA ES 0.24 PARA ESTO SIRVE ESTA FUNCION
     def getHyperboxSizePerFeature(self):
         hyperboxSizePerFeature = []
         for context in self.dataContext:
@@ -80,73 +80,82 @@ class Dyclee:
         return hyperboxSizePerFeature
 
 
-
+#ESTA FUNCION NOS ARROJA DATOS PERO SI SE LA COMENTA DA ERROR EN EL CODIGO
     def dataContextAsStr(self):
         aux=""
         for context in self.dataContext:
-            aux += str(context.minimun) + "<" + str(context.maximun) + " | "
+          print("hola",context)
+          aux += str(context.minimun) + "<" + str(context.maximun) + " | "
+          print("hello",aux)
         return aux
 
 
     # S1 !!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-
+#EN ESTA LINEA DE CODIGO SE INGRESAN LOS DATOS QUE VIENEN DEL ARCHIVO CSV Y LOS CONVIERTE EN UN NUEVO ELEMENTO
     # returns a list of floats given an iterable object
     #devuelve una lista de flotantes dado un objeto iterable
     def trainOnElement(self, newEl,ac):
         # get an object matching the desired format (to guarantee consistency)
         #obtener un objeto que coincida con el formato deseado (para garantizar la coherencia)
+        #ESTE PUNTO ES DONDE SE GUARDAR LOS NUEVOS ELEMENTOS QUE SE INGRESAN Y EL PRIMER VALOR SALE X=0.92,X=0.98
         point = self.getListOfFloatsFromIterable(newEl)
+       # print("bb",point)
         self.processedElements += 1
+        #este elemento es un contador del 1 al 500
         # control the stream speed /controlar la velocidad del flujo
         # TODO: check if the "speed" param is ok ...
 
         #No aplica xq no se va a trabajar con marca de tiempo
-        if self.timeToIncTimestamp():
-            self.timestamp += 1
-            self.currTimestamp.timestamp = self.timestamp
+      #  if self.timeToIncTimestamp():
+       #     self.timestamp += 1
+        #    self.currTimestamp.timestamp = self.timestamp
         # now, check what to do with the new point
         #ahora, compruebe qué hacer con el nuevo punto
         self.processPoint(point,ac)
 
         # No aplica xq no se va a trabajar con marca de tiempo
+        #ESTA FUNCION PROCESA DATOS EN LA LINEA 145
         if self.timeToCheckMicroClustersTl():
+        #ESTA FUNCION PROCESA DATOS EN LA LINEA 142
             self.checkMicroClustersTl()
         # periodic cluster removal //eliminación periódica de racimos
-
         # No aplica xq no se va a trabajar con marca de tiempo
         if self.timeToPerformPeriodicClusterRemoval():
-            self.performPeriodicClusterRemoval()
+            #EN ESTA LINEA DE CODIGO ES DONDE ENVIA LOS DATOS PROCESADOS AL MAIN
+         self.performPeriodicClusterRemoval()
 
 
+
+#ESTE METODO SI LO UTILIZA Y LO UTILIZA EN LA LINEA 102 PARA GUARADAR EL NUEVO ELEMENTO
     def getListOfFloatsFromIterable(self, newEl):
-        point = []
-        for value in newEl:
-            point.append(float(value))
-        return point
+            point = []
+            for value in newEl:
+               point.append(float(value))
+            return point
 
+#LO COMENTE PORQUE NO LO UTILIZA
+   # def timeToIncTimestamp(self):
+    #    return self.processedElements % self.processingSpeed == 0
 
-    def timeToIncTimestamp(self):
-        return self.processedElements % self.processingSpeed == 0
-
-
+#SI UTILIZA ESTE METODO EN LA LINEA 122
     def timeToPerformPeriodicClusterRemoval(self):
         return self.processedElements % (self.periodicRemovalAt * self.processingSpeed) == 0
 
-
+#SI LO UTILIZA EN LA LINEA 119
     def timeToCheckMicroClustersTl(self):
-        return self.processedElements % (self.periodicUpdateAt * self.processingSpeed) == 0
+       return self.processedElements % (self.periodicUpdateAt * self.processingSpeed) == 0
 
     global listaMicrocluster
     listaMicrocluster = list()
     con = 0
     def processPoint(self, point,ac):
-        # ASSUMPTION: point is a list of floats
         #SUPUESTO: el punto es una lista de flotantes
         # find reachable u clusters for the new element
         #encontrar clústeres u accesibles para el nuevo elemento
         reachableMicroClusters = self.findReachableMicroClusters(point)
-
+       # print(reachableMicroClusters)
+        #AQUI EN ESTE PRINT ME IMPRIME ESTO O SI NO ESTO[MICROCLUSTER]-----[]
         #Si no tiene un cluster alcanzable el mismo crea su propio micro clustering
 
         #Solo entraria si llega el primer registro de la base de datos
@@ -160,7 +169,9 @@ class Dyclee:
             microCluster = MicroCluster(self.hyperboxSizePerFeature, self.currTimestamp, point)
             self.oList.append(microCluster)
             self.con=self.con+1;
-            print(self.con, ". Microcluster: ", microCluster.CF.__dict__)
+           # print(self.con,"micro",microCluster.getCentroid())
+
+           # print(self.con, ". Microcluster: ", microCluster.getCentroid())
            # print(self.con,". Microcluster: ",microCluster.getCentroid(), "valor: ",microCluster.CF.LS)
            # a=cluster()
             #a.x(point[0])
@@ -168,47 +179,54 @@ class Dyclee:
             #a.xcluster(microCluster.CF.LS[0])
             #a.ycluster(microCluster.CF.LS[1])
             #listaMicrocluster.append(a)
-
+#EN ESTE ES ES DONDE PASAN TODOS LOS MICROCLUSTER CREADOS
         else:
             # find closest reachable u cluster
             #encontrar el clúster u accesible más cercano
             closestMicroCluster = self.findClosestReachableMicroCluster(point, reachableMicroClusters)
             closestMicroCluster.addElement(point=point, lambd=self.lambd)
             self.con = self.con + 1;
-            print(self.con, ". Microcluster: ", closestMicroCluster.CF.__dict__, "valor: ", point)
+           # print(self.con, ". Microcluster: ",closestMicroCluster.getCentroid())
 
         # at this point, self self.aList and self.oList are updated
         #en este punto, self self.aList y self.oList se actualizan
 
 
-    def checkMicroClustersTl(self):
-        microClusters = self.aList + self.oList
-        for micCluster in microClusters:
-            if (self.timestamp - micCluster.CF.tl) > self.timeWindow:
-                micCluster.applyDecayComponent(self.lambd)
+    #def checkMicroClustersTl(self):
+    #    microClusters = self.aList + self.oList
+   #     for micCluster in microClusters:
+  #          print("hello",microClusters)
+ #           if (self.timestamp - micCluster.CF.tl) > self.timeWindow:
+#                micCluster.applyDecayComponent(self.lambd)
 
 
-    def performPeriodicClusterRemoval(self):
+    #def performPeriodicClusterRemoval(self):
         # if the density of an outlier micro cluster drops below the low density threshold, it is eliminated
         #si la densidad de un micro cluster atípico cae por debajo del umbral de baja densidad, se elimina
         # we will only keep the micro clusters that fulfil the density requirements
         #solo mantendremos los micro clústeres que cumplan con los requisitos de densidad
-        newOList = []
-        for oMicroCluster in self.oList:
-            if oMicroCluster.getD() >= self.getDensityThershold():
-                newOList.append(oMicroCluster)
+        #newOList = []
+        #for oMicroCluster in self.oList:
+           # if oMicroCluster.getD() >= self.getDensityThershold():
+               # newOList.append(oMicroCluster)
+          #      print("chula",newOList)
             # do not penalize emerging concepts! A micro cluster must not be 'dense' but, if it is growing, let it grow!
             ##¡No penalices conceptos emergentes! Un micro racimo no debe ser 'denso' pero, si está creciendo, ¡déjalo crecer!
-            elif (self.timestamp - oMicroCluster.CF.tl) < self.timeWindow:
-                newOList.append(oMicroCluster) # we keep the micro cluster!//Nosotras mantenemos el micro cluster!
+         #   elif (self.timestamp - oMicroCluster.CF.tl) < self.timeWindow:
+        #        print(oMicroCluster.CF.tl)
+       #         newOList.append(oMicroCluster) # we keep the micro cluster!//Nosotras mantenemos el micro cluster!
+               # print(newOList)
+
         # at this point micro clusters which are below the density requirement were discarded
         #en este punto, se descartaron los micro racimos que están por debajo del requisito de densidad
-        self.oList = newOList
+        #print(self.oList)
+      #  self.oList = newOList
+        #print(self.oList)
 
+   # def getDensityThershold(self):
+    #    dMean = self.calculateMeanFor(self.oList)
 
-    def getDensityThershold(self):
-        dMean = self.calculateMeanFor(self.oList)
-        return dMean
+     #   return dMean
 
 
    # def calculateMeanAndSD(self, dataset):
@@ -232,18 +250,24 @@ class Dyclee:
     #         featureSD = stddev(data=fValuesList, mean=featureMean)
     #         self.SDList.append(featureSD)
 
-
+    cu=0
     # devuelve una lista de clústeres u accesibles para un elemento dado
+    #AQUI ES DONDE LOS DATOS SON INGRESADOS A OLIST DEBIDO QUE SON LOS VALORES QUE NO PERTENENCEN A LOS MICROCLUSTER
     def findReachableMicroClusters(self, point):
         reachableMicroClusters = self.getReachableMicroClustersFrom(self.aList, point)
         if not reachableMicroClusters:
             # empty list -> check oList //lista vacía -> comprobar oList
+            self.cu=self.cu+1
+            #print(self.cu,"datos",self.oList)
+           # print(self.cu,point)
             reachableMicroClusters = self.getReachableMicroClustersFrom(self.oList, point)
+            #print("lista",reachableMicroClusters)
         return reachableMicroClusters
 
 
     # modifies reareachableMicroClusters iterating over a given list of u clusters
     #modifica los MicroClusters alcanzables que iteran sobre una lista dada de u clústeres
+    a=0
     def getReachableMicroClustersFrom(self, microClustersList, point):
         res = []
         for microCluster in microClustersList:
@@ -251,47 +275,72 @@ class Dyclee:
             #El microCluster tiene el tamaño relativo parametrizado
             if microCluster.isReachableFrom(point):
                 res.append(microCluster)
+                self.a=self.a+1
+                #print(self.a,microCluster.getCentroid())
         return res
 
-
+    co=0
     # returns the closest microCluster for an element, given a set of reachable microClusters
     #devuelve el microCluster más cercano para un elemento, dado un conjunto de microClusters alcanzables
+    #EN ESTA FUNCION ES DONDE YA NO APARECEN LOS 103 DATOS Y SOLO NOS QUEDAN LOS 397 DATOS OJO
     def findClosestReachableMicroCluster(self, point, reachableMicroClusters):
+        self.co=self.co+1
         closestMicroCluster = None
         minDistance = float("inf")
         for microCluster in reachableMicroClusters:
+            #ARROJA VARIABLES COMO (MICROCLUSTER)
+            #print(microCluster,reachableMicroClusters)
             distance = manhattanDistance(point, microCluster.getCentroid())
+            print(self.co,microCluster.getCentroid())
+            #print(point)
+            #print(self.co,"PUNTO",point,"MICRO",microCluster.getCentroid())
+           # print(microCluster.previousCentroid)
             if distance < minDistance:
                 minDistance = distance
                 closestMicroCluster = microCluster
         return closestMicroCluster
 
-
-
+#print(microCluster.__dict__)ESTA FUNCION NOS MUESTRA TODOS ESOS DATOS
+#microcluster.label nos arroja datos -1
+    #microcluster CF.ss,tl,ts,sl arroja datos que no nos sirven para la ejecucion del programa
+#microcluster CurrTimestap nos arroja <utils.timestamp.Timestamp object at 0x0170A4F0>
+    # microcluster.hyperboxSizePerFeature arroja [0.24 0.24]
+    # microcluster.label nos arroja datos -1
+    # microcluster.label nos arroja datos -1
+    # microcluster.label nos arroja datos -1
+    # microcluster.label nos arroja datos -1
+    # microcluster.label nos arroja datos -1
 
 # S2 !!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-
+#ESTA FUNCION ACTUALIZA LOS VALORES EN EL GRAFICO
     def getClusteringResult(self):
         # update density mean and median values with current ones
         # Actualizar los valores medios y medianos de densidad con los actuales
         self.calculateDensityMeanAndMedian()
+       # print(self.calculateDensityMeanAndMedian())
         # rearrange lists according to microClusters density, considering density mean and median limits
         #reorganizar las listas de acuerdo con la densidad de microClusters,
         # considerando los límites de la media y la mediana de la densidad
         self.rearrangeLists()
+        #print(self.rearrangeLists())
         # form final clusters //formar grupos finales
         self.formClusters()
+        #print(self.formClusters())
         # concatenate them: get both active and outlier microClusters together
         #concatenarlos: juntar microclústeres activos y atípicos
+        #AQUI EN ESTE MICROCLUSTER SE MUESTRAN LOS 103 DATOS QUE SE GUARDAN EN EL ARCHIVO CSV.
         microClusters = self.aList + self.oList
+        #print(microClusters)
         # extract dense microClusters from active list
         #extraer microclústeres densos de la lista activa
 
         #DMC = self.findDenseMicroClusters()
 
         #DMC = self.findDenseMicroClusters ()
+#AQUI EN DMC SE GUARDAN SOLO LOS VALORES NORMALES Y SE DESCARTA LOS VALORES ATIPICOS OSEA SOLO 61 DATOS  Y EN EL OLIST SE GUARDAN LOS 41 VALORES RESTANTES
         DMC = self.aList
+        #print(DMC)
         # plot current state and micro cluster evolution
         #trazar el estado actual y la evolución del micro cluster
         self.plotClusters(microClusters, DMC)
@@ -385,8 +434,10 @@ class Dyclee:
             return directlyConn
         else:
             notDirectlyConnButClose = self.findCloseMicroClustersFor(microCluster, microClusters)
+           # print("l",microCluster)
             return directlyConn + notDirectlyConnButClose
 
+    cont = 0
 
     def findCloseMicroClustersFor(self, microCluster, microClusters):
         stddevProportion = self.closenessThreshold
@@ -398,17 +449,22 @@ class Dyclee:
         # the set of close micro clusters which will be used to expand a macro one
         #el conjunto de microclústeres cercanos que se utilizarán para expandir uno macro
         res = []
+        self.cont = self.cont + 1
+
         for mc in microClusters:
             mcIsClose = microCluster.distanceTo(mc) < limit
+           # print(microCluster.CF.data)
             if not microCluster.isDirectlyConnectedWith(mc, self.uncommonDimensions) and mcIsClose:
                 res.append(mc)
             # TO DEBUG
             #DEPURAR
             else:
-                print("dist promedio", avgDistToAllMicroClusters)
-                print("stdev", stdev)
-                print("límite", limit)
-                print("yo", microCluster.getCentroid(), "el", mc.getCentroid())
+
+                #print("dist promedio", avgDistToAllMicroClusters)
+                #print("stdev", stdev)
+                #print("límite", limit)
+                #print(self.cont,"microcluster",microCluster.getCentroid())
+                #print("yo", microCluster.getCentroid(), "el", mc.getCentroid())
                 print("\n")
         return res
 
