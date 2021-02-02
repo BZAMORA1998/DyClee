@@ -57,7 +57,7 @@ for datIndx in range(len(non_time_series_datasets)):
         dyclee.trainOnElement(dataPoint,ac)
     currMicroClusters = dyclee.getClusteringResult()  # queremos mostrar el agrupamiento al final, solo una vez
     res = prepareResultFrom(currMicroClusters)
-    #print(res)
+    #print(currMicroClusters)
     folder = baseFolder + getDycleeName() + '/'
     #print(folder)
     storeNonTimeSeriesResult(res, folder)

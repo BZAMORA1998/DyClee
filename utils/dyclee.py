@@ -84,7 +84,7 @@ class Dyclee:
     def dataContextAsStr(self):
         aux=""
         for context in self.dataContext:
-          print("hola",context)
+          #print("hola",context)
           aux += str(context.minimun) + "<" + str(context.maximun) + " | "
           print("hello",aux)
         return aux
@@ -107,12 +107,14 @@ class Dyclee:
         # TODO: check if the "speed" param is ok ...
 
         #No aplica xq no se va a trabajar con marca de tiempo
-      #  if self.timeToIncTimestamp():
-       #     self.timestamp += 1
-        #    self.currTimestamp.timestamp = self.timestamp
+        if self.timeToIncTimestamp():
+           self.timestamp += 1
+           self.currTimestamp.timestamp = self.timestamp
         # now, check what to do with the new point
         #ahora, compruebe qué hacer con el nuevo punto
+
         self.processPoint(point,ac)
+       # print(ac,"hello",point)
 
         # No aplica xq no se va a trabajar con marca de tiempo
         #ESTA FUNCION PROCESA DATOS EN LA LINEA 145
@@ -135,8 +137,8 @@ class Dyclee:
             return point
 
 #LO COMENTE PORQUE NO LO UTILIZA
-   # def timeToIncTimestamp(self):
-    #    return self.processedElements % self.processingSpeed == 0
+    def timeToIncTimestamp(self):
+       return self.processedElements % self.processingSpeed == 0
 
 #SI UTILIZA ESTE METODO EN LA LINEA 122
     def timeToPerformPeriodicClusterRemoval(self):
@@ -169,7 +171,8 @@ class Dyclee:
             microCluster = MicroCluster(self.hyperboxSizePerFeature, self.currTimestamp, point)
             self.oList.append(microCluster)
             self.con=self.con+1;
-           # print(self.con,"micro",microCluster.getCentroid())
+            #print(self.con, "micro",microCluster.getCentroid(),point)
+           # print(self.con,"micro",self.oList,microCluster)
 
            # print(self.con, ". Microcluster: ", microCluster.getCentroid())
            # print(self.con,". Microcluster: ",microCluster.getCentroid(), "valor: ",microCluster.CF.LS)
@@ -186,11 +189,11 @@ class Dyclee:
             closestMicroCluster = self.findClosestReachableMicroCluster(point, reachableMicroClusters)
             closestMicroCluster.addElement(point=point, lambd=self.lambd)
             self.con = self.con + 1;
-           # print(self.con, ". Microcluster: ",closestMicroCluster.getCentroid())
+            print(self.con,closestMicroCluster.CF.n,closestMicroCluster.CF.data)
+            #print(self.con, "Microcluster: ",closestMicroCluster.getCentroid())
 
         # at this point, self self.aList and self.oList are updated
         #en este punto, self self.aList y self.oList se actualizan
-
 
     #def checkMicroClustersTl(self):
     #    microClusters = self.aList + self.oList
@@ -261,6 +264,7 @@ class Dyclee:
             #print(self.cu,"datos",self.oList)
            # print(self.cu,point)
             reachableMicroClusters = self.getReachableMicroClustersFrom(self.oList, point)
+            #print(self.cu,point)
             #print("lista",reachableMicroClusters)
         return reachableMicroClusters
 
@@ -276,7 +280,8 @@ class Dyclee:
             if microCluster.isReachableFrom(point):
                 res.append(microCluster)
                 self.a=self.a+1
-                #print(self.a,microCluster.getCentroid())
+                #print(microCluster.__init__())
+               # print(self.a,microCluster.getCentroid())
         return res
 
     co=0
@@ -291,13 +296,16 @@ class Dyclee:
             #ARROJA VARIABLES COMO (MICROCLUSTER)
             #print(microCluster,reachableMicroClusters)
             distance = manhattanDistance(point, microCluster.getCentroid())
-            print(self.co,microCluster.getCentroid())
+           # print(self.co,microCluster.getCentroid())
             #print(point)
             #print(self.co,"PUNTO",point,"MICRO",microCluster.getCentroid())
            # print(microCluster.previousCentroid)
             if distance < minDistance:
                 minDistance = distance
                 closestMicroCluster = microCluster
+                #print(point)
+                #print(self.co,"mini",minDistance,"distancia",distance,"centroide",microCluster.getCentroid())
+                #print(microCluster.__repr__())
         return closestMicroCluster
 
 #print(microCluster.__dict__)ESTA FUNCION NOS MUESTRA TODOS ESOS DATOS
