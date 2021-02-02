@@ -346,7 +346,7 @@ class Dyclee:
         #DMC = self.findDenseMicroClusters()
 
         #DMC = self.findDenseMicroClusters ()
-#AQUI EN DMC SE GUARDAN SOLO LOS VALORES NORMALES Y SE DESCARTA LOS VALORES ATIPICOS OSEA SOLO 61 DATOS  Y EN EL OLIST SE GUARDAN LOS 41 VALORES RESTANTES
+        #AQUI EN DMC SE GUARDAN SOLO LOS VALORES NORMALES Y SE DESCARTA LOS VALORES ATIPICOS OSEA SOLO 61 DATOS  Y EN EL OLIST SE GUARDAN LOS 41 VALORES RESTANTES
         DMC = self.aList
         #print(DMC)
         # plot current state and micro cluster evolution
@@ -780,6 +780,12 @@ class Dyclee:
     # returns True if microClusters are plottable (regarding amount of features)
     ## devuelve True si los microClusters son trazables (con respecto a la cantidad de características)
     def plottableMicroClusters(self, microClusters):
+        cl=0
+        for microCluster in microClusters:
+            cl=cl+1
+            for data in microCluster.CF.data:
+                print(str(cl)+". Microcluster: "+str(microCluster.getCentroid())+" - Valor de data: "+str(len(microCluster.CF.data))+" - data: "+str(data))
+
         if len(microClusters) == 0:
             # there are't any u clusters to plot
             ## no hay clusters de u para trazar
