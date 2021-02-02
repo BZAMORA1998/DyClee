@@ -86,7 +86,7 @@ class Dyclee:
         for context in self.dataContext:
           #print("hola",context)
           aux += str(context.minimun) + "<" + str(context.maximun) + " | "
-          print("hello",aux)
+         # print("hello",aux)
         return aux
 
 
@@ -468,11 +468,11 @@ class Dyclee:
             #DEPURAR
             else:
 
-                #print("dist promedio", avgDistToAllMicroClusters)
-                #print("stdev", stdev)
-                #print("límite", limit)
-                #print(self.cont,"microcluster",microCluster.getCentroid())
-                #print("yo", microCluster.getCentroid(), "el", mc.getCentroid())
+                print("dist promedio", avgDistToAllMicroClusters)
+                print("stdev", stdev)
+                print("límite", limit)
+                print(self.cont,"microcluster",microCluster.getCentroid())
+                print("yo", microCluster.getCentroid(), "el", mc.getCentroid())
                 print("\n")
         return res
 
