@@ -193,7 +193,7 @@ class Dyclee:
             closestMicroCluster = self.findClosestReachableMicroCluster(point, reachableMicroClusters)
             closestMicroCluster.addElement(point=point, lambd=self.lambd)
             self.con = self.con + 1;
-            print(self.con,closestMicroCluster.CF.n,closestMicroCluster.CF.data)
+           # print(self.con,closestMicroCluster.CF.n,closestMicroCluster.CF.data)
             #print(self.con, "Microcluster: ",closestMicroCluster.getCentroid())
 
         # at this point, self self.aList and self.oList are updated
