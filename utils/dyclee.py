@@ -544,7 +544,7 @@ class Dyclee:
             for li in lista:
                 if col.color == li.color:
                     cont1 =cont1+1
-                    printInMagenta(str(cont1)+". Cluster "+str(cont)+" : X:"+str(li.x)+" || Y: "+str(li.y))
+                    #printInMagenta(str(cont1)+". Cluster "+str(cont)+" : X:"+str(li.x)+" || Y: "+str(li.y))
 
         # show both subplots
         #mostrar ambas subtramas
@@ -613,7 +613,7 @@ class Dyclee:
 
             cont1=0
             for x1 in x:
-                printInMagenta("Densa Microcluster: Valor Y: " + x1.__repr__()+ " Valor: "+y[cont1].__repr__())
+               # printInMagenta("Densa Microcluster: Valor Y: " + x1.__repr__()+ " Valor: "+y[cont1].__repr__())
                 cont1=cont1+1
         # add general style to subplot n°2
         ## agregar estilo general a la subtrama n ° 2
@@ -760,13 +760,14 @@ class Dyclee:
             msg += "sin valores atípicos."
         printInMagenta(msg + "\n")
         for key, value in dic.items():
+
             printInMagenta("- Cluster n°" + key.__repr__() + " -> " + value.__repr__() + " microClusters" + "\n")
         # show detailed info regarding lists of microClusters coordinates and labels
         ## mostrar información detallada sobre listas de coordenadas y etiquetas de microClusters
 
-        printInMagenta("* microClusters etiquetas: " + '\n' + clusters.__repr__() + '\n')
+        printInMagenta("* microClusters X etiquetas: " + '\n' + clusters.__repr__() + '\n')
 
-        printInMagenta("* microClusters etiquetas: " + '\n' + clusters.__repr__() + '\n')
+        printInMagenta("* microClusters Y etiquetas: " + '\n' + clusters.__repr__() + '\n')
         printInMagenta("* microClusters 'x' coordenadas: " + '\n' + x.__repr__() + '\n')
         printInMagenta("* microClusters 'y' coordenadas: " + '\n' + y.__repr__())
 
@@ -786,14 +787,17 @@ class Dyclee:
     resul = list()
     def plottableMicroClusters(self, microClusters):
         cl=0
+        suma=0
         with open('resultado.csv', 'w') as csvfile:
             fieldnames = ['NUMBER','CENTROIDER','DATA']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
             for microCluster in microClusters:
                 cl=cl+1
+
                 for data in microCluster.CF.data:
-                    print(str(cl)+". Microcluster: "+str(microCluster.getCentroid())+" - Valor de data: "+str(len(microCluster.CF.data))+" - data: "+str(data))
+                    suma = suma + 1
+                    print(str(cl)+". Microcluster: "+str(microCluster.getCentroid())+" - data: "+str(data)+" - Suma: "+str(suma))
                     # r=resultado()
                     # r.dataX(data[0])
                     # r.dataY(data[1])
@@ -801,6 +805,9 @@ class Dyclee:
                     data1={'NUMBER':str(cl),'CENTROIDER':microCluster.getCentroid(),'DATA': data}
                     writer.writerow(data1)
                     # self.escribirCsv(data1)
+
+            total=suma+cl
+            print("total: "+str(total))
 
         if len(microClusters) == 0:
             # there are't any u clusters to plot
