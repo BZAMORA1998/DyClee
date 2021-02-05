@@ -13,7 +13,7 @@ import matplotlib
 ##configure el backend de matplotlib en Qt5Agg para hacer que el maximizador de ventana de figura funcione
 ##configure el backend de matplotlib en Qt5Agg para hacer que el maximizador de ventana de figura funcione
 matplotlib.use('Qt5Agg')
-
+import csv
 
 class valorCluster:
     x = 0.0
@@ -28,6 +28,10 @@ class cluster:
     y = 0.0
     xcluster = 0.0
     ycluster = 0.0
+
+class resultado:
+    dataY:any
+    dataX:any
 
 class Dyclee:
     def __init__(self, dataContext, relativeSize = 0.6, speed = float("inf"), uncommonDimensions = 0, lambd = 0, periodicRemovalAt = float("inf"),
@@ -778,12 +782,25 @@ class Dyclee:
 
     # returns True if microClusters are plottable (regarding amount of features)
     ## devuelve True si los microClusters son trazables (con respecto a la cantidad de características)
+    global resul
+    resul = list()
     def plottableMicroClusters(self, microClusters):
         cl=0
-        for microCluster in microClusters:
-            cl=cl+1
-            for data in microCluster.CF.data:
-                print(str(cl)+". Microcluster: "+str(microCluster.getCentroid())+" - Valor de data: "+str(len(microCluster.CF.data))+" - data: "+str(data))
+        with open('resultado.csv', 'w') as csvfile:
+            fieldnames = ['NUMBER','CENTROIDER','DATA']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+            for microCluster in microClusters:
+                cl=cl+1
+                for data in microCluster.CF.data:
+                    print(str(cl)+". Microcluster: "+str(microCluster.getCentroid())+" - Valor de data: "+str(len(microCluster.CF.data))+" - data: "+str(data))
+                    # r=resultado()
+                    # r.dataX(data[0])
+                    # r.dataY(data[1])
+                    # resul.append(r)
+                    data1={'NUMBER':str(cl),'CENTROIDER':microCluster.getCentroid(),'DATA': data}
+                    writer.writerow(data1)
+                    # self.escribirCsv(data1)
 
         if len(microClusters) == 0:
             # there are't any u clusters to plot
@@ -796,3 +813,12 @@ class Dyclee:
             return False
         # microClusters are plottable//# microClusters son trazables
         return True
+
+    # def escribirCsv(self,data):
+    #     with open('example4.csv', 'w') as csvfile:
+    #         fieldnames = ['first_name', 'last_name', 'Grade']
+    #         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    #
+    #         writer.writeheader()
+    #         writer.writerow(data)
+    #     print("Writing complete")
