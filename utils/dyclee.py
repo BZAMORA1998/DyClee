@@ -789,12 +789,12 @@ class Dyclee:
         cl=0
         suma=0
         with open('resultado.csv', 'w') as csvfile:
-            fieldnames = ['NUMBER','CENTROIDER','DATA']
+            fieldnames = ['NUMBER','CENTROIDER','DATA','suma por microcluster']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
             for microCluster in microClusters:
                 cl=cl+1
-
+                suma=0
                 for data in microCluster.CF.data:
                     suma = suma + 1
                     print(str(cl)+". Microcluster: "+str(microCluster.getCentroid())+" - data: "+str(data)+" - Suma: "+str(suma))
@@ -802,10 +802,12 @@ class Dyclee:
                     # r.dataX(data[0])
                     # r.dataY(data[1])
                     # resul.append(r)
-                    data1={'NUMBER':str(cl),'CENTROIDER':microCluster.getCentroid(),'DATA': data}
+                    data1={'NUMBER':str(cl),'CENTROIDER':microCluster.getCentroid(),'DATA': data,"suma por microcluster":''}
                     writer.writerow(data1)
                     # self.escribirCsv(data1)
-
+                data2 = {'NUMBER': '--------------------', 'CENTROIDER':'--------------------------------------', 'DATA': '----------------------------',
+                     "suma por microcluster": suma+1}
+                writer.writerow(data2)
             total=suma+cl
             print("total: "+str(total))
 
