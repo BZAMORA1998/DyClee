@@ -18,7 +18,7 @@ def prepareResultFrom(currMicroClusters):
     return np.array(res)
 
 # GRUPOS DE DATOS QUE NO SON SERIES TEMPORALES
-
+#hello
 # PARAMENTROS
 relativeSize=0.06   #TAMAÑO RELATIVO DE loss mmicroclustering del proyecto DYCLEE
 uncommonDimensions = 0#DIMENSIONES POCO COMUNES
