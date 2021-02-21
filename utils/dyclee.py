@@ -14,6 +14,9 @@ import matplotlib
 ##configure el backend de matplotlib en Qt5Agg para hacer que el maximizador de ventana de figura funcione
 matplotlib.use('Qt5Agg')
 import csv
+import folium
+import pandas as pd
+from folium.plugins import  MarkerCluster
 
 class valorCluster:
     x = 0.0
@@ -790,27 +793,52 @@ class Dyclee:
         cl=0
         suma=0
         with open('resultado.csv', 'w') as csvfile:
-            fieldnames = ['NUMBER','CENTROIDER','DATA','suma por microcluster']
+            fieldnames = ['NUMBER','x','y','esCentroide']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
             for microCluster in microClusters:
                 cl=cl+1
                 suma=0
+                esPrimeraVez=True
                 for data in microCluster.CF.data:
                     suma = suma + 1
-                    print(str(cl)+". Microcluster: "+str(microCluster.getCentroid())+" - data: "+str(data)+" - Suma: "+str(suma))
-                    # r=resultado()
-                    # r.dataX(data[0])
-                    # r.dataY(data[1])
-                    # resul.append(r)
-                    data1={'NUMBER':str(cl),'CENTROIDER':microCluster.getCentroid(),'DATA': data,"suma por microcluster":''}
+
+                    if(esPrimeraVez):
+                        data2={'NUMBER':str(cl), 'x': microCluster.getCentroid()[0],'y': microCluster.getCentroid()[1],'esCentroide':'S'}
+                        writer.writerow(data2)
+
+                    data1={'NUMBER':str(cl),'x': data[0],'y':data[1],'esCentroide':'N'}
                     writer.writerow(data1)
                     # self.escribirCsv(data1)
-                data2 = {'NUMBER': '--------------------', 'CENTROIDER':'--------------------------------------', 'DATA': '----------------------------',
-                     "suma por microcluster": suma+1}
-                writer.writerow(data2)
+                    esPrimeraVez=False
+
             total=suma+cl
             print("total: "+str(total))
+
+        df = pd.read_csv('./resultado.csv')
+        df.columns = df.columns.str.strip()
+        df.head()
+        subset_of_df = df.sample(n=74)
+        some_map = folium.Map(location=[subset_of_df['x'].mean(),
+                                        subset_of_df['y'].mean()],
+                              zoom_start=10)
+        for row in subset_of_df.itertuples():
+            some_map.add_child(folium.Marker(location=[row.x, row.y], popup=row.y))
+
+        some_map
+
+        some_map_2 = folium.Map(location=[subset_of_df['x'].mean(),
+                                          subset_of_df['y'].mean()],
+                                zoom_start=10)
+
+        mc = MarkerCluster()
+
+        for row in subset_of_df.itertuples():
+            mc.add_child(folium.Marker(location=[row.x, row.y]))
+
+        some_map_2.add_child(mc)
+
+        some_map_2.save("mapa.html")
 
         if len(microClusters) == 0:
             # there are't any u clusters to plot
