@@ -585,17 +585,16 @@ class Dyclee:
         #obtener centroides de microClusters
         centroids = [microCluster.getCentroid() for microCluster in microClusters]
 
-        #x, y = zip(*centroids)
+        x, y = zip(*centroids)
         # show info to user
         #Mostrar información al usuario
-        #self.showClusteringInfo(labelsPerUCluster=labels, clusters=labelsAsNpArray, x=x, y=y)
+        self.showClusteringInfo(labelsPerUCluster=labels, clusters=labelsAsNpArray, x=x, y=y)
         # scatter'
         #dispersión'
-        #ax1.scatter(x, y, c=labelsAsNpArray, cmap="nipy_spectral", marker='s', alpha=0.8, s=s)
+        ax1.scatter(x, y, c=labelsAsNpArray, cmap="nipy_spectral", marker='s', alpha=0.8, s=s)
         # add general style to subplot n°1
         #agregar estilo general a la subtrama n ° 1
-        #self.addStyleToSubplot(ax1,
-         #                      title='ESTADOS ACTUALES\nCuadrado lrg = microcluster denso \ncuadrado medio = microcluster semidenso\nSml cuadrado = microcluster atípico')
+        self.addStyleToSubplot(ax1,title='ESTADOS ACTUALES\nCuadrado lrg = microcluster denso \ncuadrado medio = microcluster semidenso\nSml cuadrado = microcluster atípico')
 
 
     def plotMicroClustersEvolution(self, ax2, DMC):
