@@ -743,7 +743,7 @@ class Dyclee:
         dx = (real_x[1] - real_x[0]) / 2.
         dy = (real_y[1] - real_y[0]) / 2.
         extent = [real_x[0] - dx, real_x[-1] + dx, real_y[0] - dy, real_y[-1] + dy]
-        ax.imshow(mpimg.imread('C:/Users/Bryan/Pictures/Screenshot_1.png'), extent=extent)
+        ax.imshow(mpimg.imread('./img/guayaquil.png'), extent=extent)
         #ax.imshow(mpimg.imread('C:/Users/Bryan/Pictures/Screenshot_1.png'),vmin=-2.5,vmax=2.5)
         ax.set_xlim(minAndMaxDeviations)
         ax.set_ylim(minAndMaxDeviations)
