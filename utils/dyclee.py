@@ -552,7 +552,8 @@ class Dyclee:
         plt.show()
 
 
-    def getMarkersSizeList(self, microClusters):
+    def \
+            getMarkersSizeList(self, microClusters):
         res = []
         for microCluster in microClusters:
             if self.isOutlier(microCluster):
@@ -593,8 +594,7 @@ class Dyclee:
         ax1.scatter(x, y, c=labelsAsNpArray, cmap="nipy_spectral", marker='s', alpha=0.8, s=s)
         # add general style to subplot n°1
         #agregar estilo general a la subtrama n ° 1
-        self.addStyleToSubplot(ax1,
-                               title='ESTADOS ACTUALES\nCuadrado lrg = microcluster denso \ncuadrado medio = microcluster semidenso\nSml cuadrado = microcluster atípico')
+        self.addStyleToSubplot(ax1,title='ESTADOS ACTUALES\nCuadrado lrg = microcluster denso \ncuadrado medio = microcluster semidenso\nSml cuadrado = microcluster atípico')
 
 
     def plotMicroClustersEvolution(self, ax2, DMC):
