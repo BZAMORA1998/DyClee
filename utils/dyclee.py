@@ -743,7 +743,7 @@ class Dyclee:
         dx = (real_x[1] - real_x[0]) / 2.
         dy = (real_y[1] - real_y[0]) / 2.
         extent = [real_x[0] - dx, real_x[-1] + dx, real_y[0] - dy, real_y[-1] + dy]
-        ax.imshow(mpimg.imread('./img/guayaquil.png'), extent=extent)
+        ax.imshow(mpimg.imread('./img/beijing.png'), extent=extent)
         #ax.imshow(mpimg.imread('C:/Users/Bryan/Pictures/Screenshot_1.png'),vmin=-2.5,vmax=2.5)
         ax.set_xlim(minAndMaxDeviations)
         ax.set_ylim(minAndMaxDeviations)
@@ -751,7 +751,7 @@ class Dyclee:
         #establecer las características generales de la parcela
         ax.set_xlabel("Característica 1")
         ax.set_ylabel("Característica 2")
-        ax.grid(color='k', linestyle=':', linewidth=1)
+        ax.grid(color='k', linestyle='', linewidth=1)
 
 
     def showClusteringInfo(self, labelsPerUCluster, clusters, x, y):
