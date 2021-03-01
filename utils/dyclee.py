@@ -9,6 +9,8 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as clrs
 from utils.helpers.custom_printing_fxs import printInMagenta
 import matplotlib
+import matplotlib.image as mpimg
+import random
 # set matplotlib backend to Qt5Agg to make figure window maximizer work
 ##configure el backend de matplotlib en Qt5Agg para hacer que el maximizador de ventana de figura funcione
 ##configure el backend de matplotlib en Qt5Agg para hacer que el maximizador de ventana de figura funcione
@@ -583,7 +585,6 @@ class Dyclee:
         # get microClusters centroids
         #obtener centroides de microClusters
         centroids = [microCluster.getCentroid() for microCluster in microClusters]
-
         x, y = zip(*centroids)
         # show info to user
         #Mostrar información al usuario
@@ -593,8 +594,7 @@ class Dyclee:
         ax1.scatter(x, y, c=labelsAsNpArray, cmap="nipy_spectral", marker='s', alpha=0.8, s=s)
         # add general style to subplot n°1
         #agregar estilo general a la subtrama n ° 1
-        self.addStyleToSubplot(ax1,
-                               title='ESTADOS ACTUALES\nCuadrado lrg = microcluster denso \ncuadrado medio = microcluster semidenso\nSml cuadrado = microcluster atípico')
+        self.addStyleToSubplot(ax1,title='ESTADOS ACTUALES\nCuadrado lrg = microcluster denso \ncuadrado medio = microcluster semidenso\nSml cuadrado = microcluster atípico')
 
 
     def plotMicroClustersEvolution(self, ax2, DMC):
@@ -698,6 +698,7 @@ class Dyclee:
             # plot the rectangle center (microCluster centroid)
             ## trazar el centro del rectángulo (centroide microCluster)
             ax3.plot(realX, realY, ".", color=c, alpha=0.3)
+
         self.addStyleToSubplot(ax3, title='MICRO CLUSTERS TAMAÑO REAL')
 
 
@@ -736,6 +737,14 @@ class Dyclee:
         ax.set_title(title)
         # set axes limits//establecer límites de ejes
         minAndMaxDeviations = [-2.5, 2.5]
+
+        real_x = np.array([-2, -1, 0, 1, 2])
+        real_y = np.array([-2, -1, 0, 1, 2])
+        dx = (real_x[1] - real_x[0]) / 2.
+        dy = (real_y[1] - real_y[0]) / 2.
+        extent = [real_x[0] - dx, real_x[-1] + dx, real_y[0] - dy, real_y[-1] + dy]
+        ax.imshow(mpimg.imread('./img/guayaquil.png'), extent=extent)
+        #ax.imshow(mpimg.imread('C:/Users/Bryan/Pictures/Screenshot_1.png'),vmin=-2.5,vmax=2.5)
         ax.set_xlim(minAndMaxDeviations)
         ax.set_ylim(minAndMaxDeviations)
         # set plot general characteristics
